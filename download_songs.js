@@ -26,8 +26,6 @@ const CONFIG = {
   outputDir: path.join(__dirname, "songs"),
   delayMs: 1500,
   ymlConfigPath: path.join(__dirname, "server", "src", "config", "dev.yml"),
-  // 第三方对象存储（OSS/COS）基础访问链接地址，上传后在此域名下直接拼接音频文件名
-  ossBaseUrl: "https://your-bucket-name.oss-cn-hangzhou.aliyuncs.com/songs",
 };
 
 function sanitizeFilename(name) {
@@ -35,6 +33,21 @@ function sanitizeFilename(name) {
 }
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// 从 dev.yml 读取 COS 配置
+function getCosConfig() {
+  try {
+    if (!fs.existsSync(CONFIG.ymlConfigPath)) {
+      throw new Error(`找不到配置文件: ${CONFIG.ymlConfigPath}`);
+    }
+    const fileContents = fs.readFileSync(CONFIG.ymlConfigPath, "utf8");
+    const doc = yaml.load(fileContents);
+    return doc.cos;
+  } catch (e) {
+    console.error("⚠️ 读取 COS 配置失败:", e.message);
+    return null;
+  }
+}
 
 // 从 dev.yml 读取 MySQL 配置
 function getDbConfig() {
@@ -130,6 +143,14 @@ async function main() {
     console.log(`成功创建下载文件夹: ${CONFIG.outputDir}`);
   }
 
+  const cosConfig = getCosConfig();
+  if (!cosConfig || !cosConfig.bucket || !cosConfig.region) {
+    console.error("❌ 腾讯云 COS 配置无效，请检查 dev.yml 中的 cos 部分！");
+    return;
+  }
+  const cosBaseUrl = (cosConfig.domain || `https://${cosConfig.bucket}.cos.${cosConfig.region}.myqcloud.com`).replace(/\/$/, '');
+  console.log(`🎉 腾讯云 COS 域名解析成功: ${cosBaseUrl}`);
+
   const dbConfig = getDbConfig();
   console.log(
     `正在尝试连接 MySQL 数据库... 地址: ${dbConfig.host}:${dbConfig.port}, 库名: ${dbConfig.database}`,
@@ -221,6 +242,34 @@ async function main() {
       const releaseDate = song.publishTime ? new Date(song.publishTime) : null;
       const durationMs = song.dt || 0;
 
+      // 如果本地已经下载过该音频，直接同步数据库，不再请求播放链接口
+      if (fs.existsSync(destPath)) {
+        console.log(`  -> 物理文件已存在，直接读取本地文件体积并同步数据库。`);
+        try {
+          const stats = fs.statSync(destPath);
+          const audioSize = stats.size;
+          await saveSongToDb(connection, {
+            name: song.name,
+            aliasJson,
+            albumId,
+            albumName,
+            albumCover,
+            audioUrl: `${cosBaseUrl}/songs/${encodeURIComponent(fileName)}`,
+            neteaseSongId: songId,
+            durationMs: durationMs,
+            audioSize,
+            audioType: fileType,
+            bitrate: 128000,
+            tagsJson,
+            releaseDate,
+          });
+          console.log(`  -> 数据库同步成功！`);
+        } catch (dbErr) {
+          console.error(`  -> ⚠️ 数据库同步失败:`, dbErr.message);
+        }
+        continue;
+      }
+
       // 发起请求获取直链并下载 (携带原生 Cookie)
       const urlQuery = `${CONFIG.apiBase}/song/url/v1?id=${songId}&level=standard&realIP=116.25.146.177`;
       console.log("  -> 获取下载链接:", urlQuery);
@@ -289,7 +338,7 @@ async function main() {
           albumId,
           albumName,
           albumCover,
-          audioUrl: `${CONFIG.ossBaseUrl}/${encodeURIComponent(fileName)}`,
+          audioUrl: `${cosBaseUrl}/songs/${encodeURIComponent(fileName)}`,
           neteaseSongId: songId,
           durationMs: realDuration,
           audioSize,

@@ -19,11 +19,11 @@ app:
     maxSize: 10
 # 腾讯云cos配置
 cos:
-  secretId: ''
-  secretKey: ''
-  bucket: ''
-  region: ''
-  domain: ''
+  secretId: 'AKIDpkgfUG6zqigWBnESSGrGUmuqZ8WgcKrE'
+  secretKey: 'CBxXt39HD0mV2MUQBj4ECxb5NSJwLWTB'
+  bucket: 'music-1329039788'
+  region: 'ap-chengdu'
+  domain: 'https://music-1329039788.cos.ap-chengdu.myqcloud.com'
   location: ''
 # 数据库配置
 db:
