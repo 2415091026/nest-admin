@@ -35,7 +35,7 @@ export class MainService {
     loginLog.status = loginRes.code === SUCCESS_CODE ? '0' : '1';
     loginLog.msg = loginRes.msg;
 
-    if (loginRes.data.userName) {
+    if (loginRes.data?.userName) {
       loginLog.userName = loginRes.data.userName;
       delete loginRes.data.userName;
     }

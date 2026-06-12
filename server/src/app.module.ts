@@ -12,6 +12,7 @@ import { UploadModule } from './module/upload/upload.module';
 import { SystemModule } from './module/system/system.module';
 import { CommonModule } from './module/common/common.module';
 import { MonitorModule } from './module/monitor/monitor.module';
+import { MusicModule } from './module/music/music.module';
 
 @Global()
 @Module({
@@ -40,6 +41,7 @@ import { MonitorModule } from './module/monitor/monitor.module';
 
     MainModule,
     UploadModule,
+    MusicModule,
 
     CommonModule,
     SystemModule,

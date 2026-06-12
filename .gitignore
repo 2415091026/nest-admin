@@ -6,3 +6,11 @@
 /docs/node_modules
 /docs/dist
 /**/node_modules
+/songs/
+/server/dist/
+/upload/
+/logs/
+*.png
+.vscode/
+.idea/
+

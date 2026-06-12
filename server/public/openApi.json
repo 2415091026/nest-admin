@@ -350,6 +350,241 @@
         ]
       }
     },
+    "/music/album": {
+      "post": {
+        "operationId": "AlbumController_create",
+        "summary": "专辑管理-创建",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAlbumDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "专辑管理"
+        ]
+      },
+      "put": {
+        "operationId": "AlbumController_update",
+        "summary": "专辑管理-更新",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAlbumDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "专辑管理"
+        ]
+      }
+    },
+    "/music/album/list": {
+      "get": {
+        "operationId": "AlbumController_findAll",
+        "summary": "专辑管理-列表",
+        "parameters": [
+          {
+            "name": "pageNum",
+            "required": true,
+            "in": "query",
+            "description": "当前分页",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "description": "每页数量",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "orderByColumn",
+            "required": false,
+            "in": "query",
+            "description": "排序字段",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isAsc",
+            "required": false,
+            "in": "query",
+            "description": "排序规则",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "专辑名称",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "artistName",
+            "required": false,
+            "in": "query",
+            "description": "歌手名称",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "company",
+            "required": false,
+            "in": "query",
+            "description": "发行公司",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "状态（0正常 1停用）",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "专辑管理"
+        ]
+      }
+    },
+    "/music/album/{id}": {
+      "get": {
+        "operationId": "AlbumController_findOne",
+        "summary": "专辑管理-详情",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "专辑管理"
+        ]
+      }
+    },
+    "/music/album/{ids}": {
+      "delete": {
+        "operationId": "AlbumController_remove",
+        "summary": "专辑管理-删除",
+        "parameters": [
+          {
+            "name": "ids",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "专辑管理"
+        ]
+      }
+    },
+    "/music/album/export": {
+      "post": {
+        "operationId": "AlbumController_export",
+        "summary": "导出专辑管理 xlsx 文件",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ListAlbumDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "专辑管理"
+        ]
+      }
+    },
+    "/music/album/songs/{neteaseAlbumId}": {
+      "get": {
+        "operationId": "AlbumController_findSongsByNeteaseAlbumId",
+        "summary": "根据网易云专辑ID查询下属歌曲",
+        "parameters": [
+          {
+            "name": "neteaseAlbumId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "专辑管理"
+        ]
+      }
+    },
     "/system/config": {
       "post": {
         "operationId": "ConfigController_create",
@@ -4477,6 +4712,212 @@
           "fileName"
         ]
       },
+      "CreateAlbumDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "专辑名称"
+          },
+          "alias": {
+            "description": "专辑别名",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "neteaseAlbumId": {
+            "type": "string",
+            "description": "网易云音乐专辑唯一ID"
+          },
+          "artistId": {
+            "type": "string",
+            "description": "关联的歌手ID"
+          },
+          "artistName": {
+            "type": "string",
+            "description": "歌手名称"
+          },
+          "picUrl": {
+            "type": "string",
+            "description": "专辑封面图片URL"
+          },
+          "blurPicUrl": {
+            "type": "string",
+            "description": "模糊封面图片URL"
+          },
+          "company": {
+            "type": "string",
+            "description": "发行公司"
+          },
+          "publishTime": {
+            "type": "string",
+            "description": "发行日期"
+          },
+          "type": {
+            "type": "string",
+            "description": "专辑类型"
+          },
+          "subType": {
+            "type": "string",
+            "description": "专辑子类型"
+          },
+          "size": {
+            "type": "number",
+            "description": "包含歌曲数量"
+          },
+          "description": {
+            "type": "string",
+            "description": "详细介绍"
+          },
+          "briefDesc": {
+            "type": "string",
+            "description": "简短描述"
+          },
+          "status": {
+            "type": "string",
+            "description": "状态（0正常 1停用）"
+          }
+        },
+        "required": [
+          "name",
+          "artistId",
+          "artistName"
+        ]
+      },
+      "UpdateAlbumDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "专辑名称"
+          },
+          "alias": {
+            "description": "专辑别名",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "neteaseAlbumId": {
+            "type": "string",
+            "description": "网易云音乐专辑唯一ID"
+          },
+          "artistId": {
+            "type": "string",
+            "description": "关联的歌手ID"
+          },
+          "artistName": {
+            "type": "string",
+            "description": "歌手名称"
+          },
+          "picUrl": {
+            "type": "string",
+            "description": "专辑封面图片URL"
+          },
+          "blurPicUrl": {
+            "type": "string",
+            "description": "模糊封面图片URL"
+          },
+          "company": {
+            "type": "string",
+            "description": "发行公司"
+          },
+          "publishTime": {
+            "type": "string",
+            "description": "发行日期"
+          },
+          "type": {
+            "type": "string",
+            "description": "专辑类型"
+          },
+          "subType": {
+            "type": "string",
+            "description": "专辑子类型"
+          },
+          "size": {
+            "type": "number",
+            "description": "包含歌曲数量"
+          },
+          "description": {
+            "type": "string",
+            "description": "详细介绍"
+          },
+          "briefDesc": {
+            "type": "string",
+            "description": "简短描述"
+          },
+          "status": {
+            "type": "string",
+            "description": "状态（0正常 1停用）"
+          },
+          "albumId": {
+            "type": "number",
+            "description": "专辑自增主键"
+          }
+        },
+        "required": [
+          "name",
+          "artistId",
+          "artistName",
+          "albumId"
+        ]
+      },
+      "DateParamsDTO": {
+        "type": "object",
+        "properties": {}
+      },
+      "ListAlbumDto": {
+        "type": "object",
+        "properties": {
+          "pageNum": {
+            "type": "number",
+            "description": "当前分页",
+            "default": 1
+          },
+          "pageSize": {
+            "type": "number",
+            "description": "每页数量",
+            "default": 10
+          },
+          "params": {
+            "description": "时间范围",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DateParamsDTO"
+              }
+            ]
+          },
+          "orderByColumn": {
+            "type": "string",
+            "description": "排序字段"
+          },
+          "isAsc": {
+            "type": "string",
+            "description": "排序规则"
+          },
+          "name": {
+            "type": "string",
+            "description": "专辑名称"
+          },
+          "artistName": {
+            "type": "string",
+            "description": "歌手名称"
+          },
+          "company": {
+            "type": "string",
+            "description": "发行公司"
+          },
+          "status": {
+            "type": "string",
+            "description": "状态（0正常 1停用）"
+          }
+        },
+        "required": [
+          "pageNum",
+          "pageSize"
+        ]
+      },
       "CreateConfigDto": {
         "type": "object",
         "properties": {
@@ -4490,10 +4931,6 @@
         "required": [
           "remark"
         ]
-      },
-      "DateParamsDTO": {
-        "type": "object",
-        "properties": {}
       },
       "ListConfigDto": {
         "type": "object",
