@@ -19,7 +19,7 @@ export class MainController {
     private readonly mainService: MainService,
     private readonly redisService: RedisService,
     private readonly configService: ConfigService,
-  ) {}
+  ) { }
   @ApiOperation({
     summary: '用户登录',
   })

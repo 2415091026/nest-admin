@@ -1,3 +1,4 @@
+export * from './song.dto';
 import { IsString, IsArray, IsOptional, IsNumber, IsEnum, Length } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { PagingDto } from 'src/common/dto/index';

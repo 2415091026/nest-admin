@@ -16,7 +16,7 @@ export class ConfigService {
     @InjectRepository(SysConfigEntity)
     private readonly sysConfigEntityRep: Repository<SysConfigEntity>,
     private readonly redisService: RedisService,
-  ) {}
+  ) { }
   async create(createConfigDto: CreateConfigDto) {
     await this.sysConfigEntityRep.save(createConfigDto);
     return ResultData.ok();
@@ -76,6 +76,7 @@ export class ConfigService {
    */
   @Cacheable(CacheEnum.SYS_CONFIG_KEY, '{configKey}')
   async getConfigValue(configKey: string) {
+    console.log(configKey)
     const data = await this.sysConfigEntityRep.findOne({ where: { configKey: configKey } });
     return data.configValue;
   }
@@ -155,7 +156,7 @@ export class ConfigService {
    * @returns
    */
   @CacheEvict(CacheEnum.SYS_CONFIG_KEY, '*')
-  async clearConfigCache() {}
+  async clearConfigCache() { }
 
   /**
    * 加载系统配置缓存

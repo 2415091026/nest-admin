@@ -4,7 +4,7 @@
     fit="cover"
     :style="`width:${realWidth};height:${realHeight};`"
     :preview-src-list="realSrcList"
-    append-to-body="true"
+    :preview-teleported="true"
   >
     <template #error>
       <div class="image-slot">
@@ -72,6 +72,8 @@ const realHeight = computed(() =>
   border-radius: 5px;
   background-color: #ebeef5;
   box-shadow: 0 0 5px 1px #ccc;
+  z-index: 99;
+  overflow: hidden;
   :deep(.el-image__inner) {
     transition: all 0.3s;
     cursor: pointer;

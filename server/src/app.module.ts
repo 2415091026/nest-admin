@@ -13,7 +13,7 @@ import { SystemModule } from './module/system/system.module';
 import { CommonModule } from './module/common/common.module';
 import { MonitorModule } from './module/monitor/monitor.module';
 import { MusicModule } from './module/music/music.module';
-
+import { WeiboModule } from './module/weibo/weibo.module';
 @Global()
 @Module({
   imports: [
@@ -42,7 +42,7 @@ import { MusicModule } from './module/music/music.module';
     MainModule,
     UploadModule,
     MusicModule,
-
+    WeiboModule,
     CommonModule,
     SystemModule,
     MonitorModule,
@@ -62,4 +62,4 @@ import { MusicModule } from './module/music/music.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

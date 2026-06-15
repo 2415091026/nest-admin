@@ -585,6 +585,323 @@
         ]
       }
     },
+    "/music/song": {
+      "post": {
+        "operationId": "SongController_create",
+        "summary": "歌曲管理-创建",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSongDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "歌曲管理"
+        ]
+      },
+      "put": {
+        "operationId": "SongController_update",
+        "summary": "歌曲管理-更新",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSongDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "歌曲管理"
+        ]
+      }
+    },
+    "/music/song/list": {
+      "get": {
+        "operationId": "SongController_findAll",
+        "summary": "歌曲管理-列表",
+        "parameters": [
+          {
+            "name": "pageNum",
+            "required": true,
+            "in": "query",
+            "description": "当前分页",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "description": "每页数量",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "orderByColumn",
+            "required": false,
+            "in": "query",
+            "description": "排序字段",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isAsc",
+            "required": false,
+            "in": "query",
+            "description": "排序规则",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "歌曲名称",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "albumName",
+            "required": false,
+            "in": "query",
+            "description": "专辑名称",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "albumId",
+            "required": false,
+            "in": "query",
+            "description": "关联的专辑ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "状态（0正常 1停用）",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "歌曲管理"
+        ]
+      }
+    },
+    "/music/song/{id}": {
+      "get": {
+        "operationId": "SongController_findOne",
+        "summary": "歌曲管理-详情",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "歌曲管理"
+        ]
+      }
+    },
+    "/music/song/{ids}": {
+      "delete": {
+        "operationId": "SongController_remove",
+        "summary": "歌曲管理-删除",
+        "parameters": [
+          {
+            "name": "ids",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "歌曲管理"
+        ]
+      }
+    },
+    "/music/song/export": {
+      "post": {
+        "operationId": "SongController_export",
+        "summary": "导出歌曲管理 xlsx 文件",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ListSongDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "歌曲管理"
+        ]
+      }
+    },
+    "/weibo/list": {
+      "get": {
+        "operationId": "WeiboController_findAll",
+        "summary": "获取微博列表",
+        "parameters": [
+          {
+            "name": "pageNum",
+            "required": true,
+            "in": "query",
+            "description": "当前分页",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "description": "每页数量",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "orderByColumn",
+            "required": false,
+            "in": "query",
+            "description": "排序字段",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isAsc",
+            "required": false,
+            "in": "query",
+            "description": "排序规则",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "content",
+            "required": false,
+            "in": "query",
+            "description": "微博正文搜索关键字",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": false,
+            "in": "query",
+            "description": "微博用户id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "微博管理"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/weibo/{id}": {
+      "get": {
+        "operationId": "WeiboController_findOne",
+        "summary": "获取微博详情",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "微博管理"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/system/config": {
       "post": {
         "operationId": "ConfigController_create",
@@ -4907,6 +5224,160 @@
           "company": {
             "type": "string",
             "description": "发行公司"
+          },
+          "status": {
+            "type": "string",
+            "description": "状态（0正常 1停用）"
+          }
+        },
+        "required": [
+          "pageNum",
+          "pageSize"
+        ]
+      },
+      "CreateSongDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "歌曲名称"
+          },
+          "albumId": {
+            "type": "string",
+            "description": "关联的专辑ID"
+          },
+          "albumName": {
+            "type": "string",
+            "description": "专辑名称"
+          },
+          "alias": {
+            "description": "歌曲别名",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "albumCover": {
+            "type": "string",
+            "description": "专辑封面URL"
+          },
+          "audioUrl": {
+            "type": "string",
+            "description": "永久音频流直链"
+          },
+          "neteaseSongId": {
+            "type": "string",
+            "description": "网易云音乐歌曲唯一ID"
+          },
+          "qqSongId": {
+            "type": "string",
+            "description": "QQ音乐歌曲唯一ID"
+          },
+          "status": {
+            "type": "string",
+            "description": "状态"
+          }
+        },
+        "required": [
+          "name",
+          "albumId",
+          "albumName"
+        ]
+      },
+      "UpdateSongDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "歌曲名称"
+          },
+          "albumId": {
+            "type": "string",
+            "description": "关联的专辑ID"
+          },
+          "albumName": {
+            "type": "string",
+            "description": "专辑名称"
+          },
+          "alias": {
+            "description": "歌曲别名",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "albumCover": {
+            "type": "string",
+            "description": "专辑封面URL"
+          },
+          "audioUrl": {
+            "type": "string",
+            "description": "永久音频流直链"
+          },
+          "neteaseSongId": {
+            "type": "string",
+            "description": "网易云音乐歌曲唯一ID"
+          },
+          "qqSongId": {
+            "type": "string",
+            "description": "QQ音乐歌曲唯一ID"
+          },
+          "status": {
+            "type": "string",
+            "description": "状态"
+          },
+          "songId": {
+            "type": "number",
+            "description": "歌曲自增主键"
+          }
+        },
+        "required": [
+          "name",
+          "albumId",
+          "albumName",
+          "songId"
+        ]
+      },
+      "ListSongDto": {
+        "type": "object",
+        "properties": {
+          "pageNum": {
+            "type": "number",
+            "description": "当前分页",
+            "default": 1
+          },
+          "pageSize": {
+            "type": "number",
+            "description": "每页数量",
+            "default": 10
+          },
+          "params": {
+            "description": "时间范围",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DateParamsDTO"
+              }
+            ]
+          },
+          "orderByColumn": {
+            "type": "string",
+            "description": "排序字段"
+          },
+          "isAsc": {
+            "type": "string",
+            "description": "排序规则"
+          },
+          "name": {
+            "type": "string",
+            "description": "歌曲名称"
+          },
+          "albumName": {
+            "type": "string",
+            "description": "专辑名称"
+          },
+          "albumId": {
+            "type": "string",
+            "description": "关联的专辑ID"
           },
           "status": {
             "type": "string",
