@@ -22,6 +22,10 @@ const service = axios.create({
 
 // request拦截器
 service.interceptors.request.use(config => {
+  // 统一为 admin-vue3 API 接口拼接 /admin 前缀
+  if (config.url && !config.url.startsWith('/admin') && !config.url.startsWith('http://') && !config.url.startsWith('https://')) {
+    config.url = '/admin' + config.url;
+  }
   // 是否需要设置 token
   const isToken = (config.headers || {}).isToken === false
   // 是否需要防止数据重复提交
