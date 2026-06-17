@@ -2,7 +2,7 @@ import { Module, Global } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import configuration from './config/index';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, RouterModule } from '@nestjs/core';
 import { JwtAuthGuard } from 'src/common/guards/auth.guard';
 import { PermissionGuard } from 'src/common/guards/permission.guard';
 import { RolesGuard } from './common/guards/roles.guard';
@@ -14,6 +14,7 @@ import { CommonModule } from './module/common/common.module';
 import { MonitorModule } from './module/monitor/monitor.module';
 import { MusicModule } from './module/music/music.module';
 import { WeiboModule } from './module/weibo/weibo.module';
+import { AppApiModule } from './module/app/app.module';
 @Global()
 @Module({
   imports: [
@@ -46,6 +47,26 @@ import { WeiboModule } from './module/weibo/weibo.module';
     CommonModule,
     SystemModule,
     MonitorModule,
+    AppApiModule,
+    RouterModule.register([
+      {
+        path: 'admin',
+        children: [
+          MainModule,
+          UploadModule,
+          SystemModule,
+          MonitorModule,
+          MusicModule,
+          WeiboModule,
+        ],
+      },
+      {
+        path: 'app',
+        children: [
+          AppApiModule,
+        ],
+      },
+    ]),
   ],
   providers: [
     {

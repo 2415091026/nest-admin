@@ -1,5 +1,5 @@
 import { IsString, IsJSON, IsEnum, IsPhoneNumber, Min, IsOptional, IsBoolean, IsNumber, MinLength, MaxLength } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
 
 export enum StatusEnum {
   STATIC = '0',
@@ -39,3 +39,5 @@ export class LoginDto {
 }
 
 export class RegisterDto extends LoginDto {}
+
+export class AppLoginDto extends OmitType(LoginDto, ['code', 'uuid'] as const) {}

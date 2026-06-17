@@ -12,7 +12,7 @@ import { CacheEnum, DelFlagEnum, StatusEnum, DataScopeEnum } from 'src/common/en
 import { LOGIN_TOKEN_EXPIRESIN, SYS_USER_TYPE } from 'src/common/constant/index';
 import { ResultData } from 'src/common/utils/result';
 import { CreateUserDto, UpdateUserDto, ListUserDto, ChangeStatusDto, ResetPwdDto, AllocatedListDto, UpdateProfileDto, UpdatePwdDto } from './dto/index';
-import { RegisterDto, LoginDto } from '../../main/dto/index';
+import { RegisterDto, LoginDto, AppLoginDto } from '../../main/dto/index';
 import { AuthUserCancelDto, AuthUserCancelAllDto, AuthUserSelectAllDto } from '../role/dto/index';
 
 import { UserEntity } from './entities/sys-user.entity';
@@ -363,6 +363,95 @@ export class UserService {
      * 设置公司名称
      */
     userData['deptName'] = deptData.deptName || '';
+    const roles = userData.roles.map((item) => item.roleKey);
+
+    const userInfo = {
+      browser: clientInfo.browser,
+      ipaddr: clientInfo.ipaddr,
+      loginLocation: clientInfo.loginLocation,
+      loginTime: loginDate,
+      os: clientInfo.os,
+      permissions: permissions,
+      roles: roles,
+      token: uuid,
+      user: userData,
+      userId: userData.userId,
+      userName: userData.userName,
+      deptId: userData.deptId,
+    };
+
+    await this.updateRedisToken(uuid, userInfo);
+
+    return ResultData.ok(
+      {
+        token,
+        userName: userData.userName,
+      },
+      '登录成功',
+    );
+  }
+
+  /**
+   * APP端登录方法（无验证码校验）
+   * @param user 登录参数DTO
+   * @param clientInfo 客户端信息
+   * @returns 登录结果数据
+   */
+  async appLogin(user: AppLoginDto, clientInfo: ClientInfoDto) {
+    const data = await this.userRepo.findOne({
+      where: {
+        userName: user.userName,
+      },
+      select: ['userId', 'password'],
+    });
+
+    if (!data) {
+      return ResultData.fail(500, `帐号或密码错误`);
+    }
+
+    this.clearCacheByUserId(data.userId);
+
+    if (!bcrypt.compareSync(user.password, data.password)) {
+      return ResultData.fail(500, `帐号或密码错误`);
+    }
+
+    const userData = await this.getUserinfo(data.userId);
+
+    if (userData.delFlag === DelFlagEnum.DELETE) {
+      return ResultData.fail(500, `您已被禁用，如需正常使用请联系管理员`);
+    }
+    if (userData.status === StatusEnum.STOP) {
+      return ResultData.fail(500, `您已被停用，如需正常使用请联系管理员`);
+    }
+
+    /**
+     * 更新用户登录信息
+     */
+    const loginDate = new Date();
+    await this.userRepo.update(
+      {
+        userId: data.userId,
+      },
+      {
+        loginDate: loginDate,
+        loginIp: clientInfo.ipaddr,
+      },
+    );
+
+    const uuid = GenerateUUID();
+    const token = this.createToken({ uuid: uuid, userId: userData.userId });
+    const permissions = await this.getUserPermissions(userData.userId);
+    const deptData = await this.sysDeptEntityRep.findOne({
+      where: {
+        deptId: userData.deptId,
+      },
+      select: ['deptName'],
+    });
+
+    /**
+     * 设置公司名称
+     */
+    userData['deptName'] = deptData?.deptName || '';
     const roles = userData.roles.map((item) => item.roleKey);
 
     const userInfo = {

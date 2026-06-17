@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/login": {
+    "/admin/login": {
       "post": {
         "operationId": "MainController_login",
         "summary": "用户登录",
@@ -31,7 +31,7 @@
         ]
       }
     },
-    "/logout": {
+    "/admin/logout": {
       "post": {
         "operationId": "MainController_logout",
         "summary": "退出登录",
@@ -61,7 +61,7 @@
         ]
       }
     },
-    "/register": {
+    "/admin/register": {
       "post": {
         "operationId": "MainController_register",
         "summary": "用户注册",
@@ -91,7 +91,7 @@
         ]
       }
     },
-    "/registerUser": {
+    "/admin/registerUser": {
       "get": {
         "operationId": "MainController_registerUser",
         "summary": "账号自助-是否开启用户注册功能",
@@ -111,7 +111,7 @@
         ]
       }
     },
-    "/captchaImage": {
+    "/admin/captchaImage": {
       "get": {
         "operationId": "MainController_captchaImage",
         "summary": "获取验证图片",
@@ -131,7 +131,7 @@
         ]
       }
     },
-    "/getInfo": {
+    "/admin/getInfo": {
       "get": {
         "operationId": "MainController_getInfo",
         "summary": "用户信息",
@@ -151,7 +151,7 @@
         ]
       }
     },
-    "/getRouters": {
+    "/admin/getRouters": {
       "get": {
         "operationId": "MainController_getRouters",
         "summary": "路由信息",
@@ -171,7 +171,7 @@
         ]
       }
     },
-    "/common/upload": {
+    "/admin/common/upload": {
       "post": {
         "operationId": "UploadController_singleFileUpload",
         "summary": "文件上传",
@@ -201,7 +201,7 @@
         ]
       }
     },
-    "/common/upload/chunk/uploadId": {
+    "/admin/common/upload/chunk/uploadId": {
       "get": {
         "operationId": "UploadController_getChunkUploadId",
         "summary": "获取切片上传任务Id",
@@ -231,7 +231,7 @@
         ]
       }
     },
-    "/common/upload/chunk": {
+    "/admin/common/upload/chunk": {
       "post": {
         "operationId": "UploadController_chunkFileUpload",
         "summary": "文件切片上传",
@@ -261,7 +261,7 @@
         ]
       }
     },
-    "/common/upload/chunk/merge": {
+    "/admin/common/upload/chunk/merge": {
       "post": {
         "operationId": "UploadController_chunkMergeFile",
         "summary": "合并切片",
@@ -291,7 +291,7 @@
         ]
       }
     },
-    "/common/upload/chunk/result": {
+    "/admin/common/upload/chunk/result": {
       "get": {
         "operationId": "UploadController_getChunkUploadResult",
         "summary": "获取切片上传结果",
@@ -320,7 +320,7 @@
         ]
       }
     },
-    "/common/upload/cos/authorization": {
+    "/admin/common/upload/cos/authorization": {
       "get": {
         "operationId": "UploadController_getAuthorization",
         "summary": "获取cos上传密钥",
@@ -350,7 +350,7 @@
         ]
       }
     },
-    "/music/album": {
+    "/admin/music/album": {
       "post": {
         "operationId": "AlbumController_create",
         "summary": "专辑管理-创建",
@@ -398,7 +398,7 @@
         ]
       }
     },
-    "/music/album/list": {
+    "/admin/music/album/list": {
       "get": {
         "operationId": "AlbumController_findAll",
         "summary": "专辑管理-列表",
@@ -488,7 +488,7 @@
         ]
       }
     },
-    "/music/album/{id}": {
+    "/admin/music/album/{id}": {
       "get": {
         "operationId": "AlbumController_findOne",
         "summary": "专辑管理-详情",
@@ -512,7 +512,7 @@
         ]
       }
     },
-    "/music/album/{ids}": {
+    "/admin/music/album/{ids}": {
       "delete": {
         "operationId": "AlbumController_remove",
         "summary": "专辑管理-删除",
@@ -536,7 +536,7 @@
         ]
       }
     },
-    "/music/album/export": {
+    "/admin/music/album/export": {
       "post": {
         "operationId": "AlbumController_export",
         "summary": "导出专辑管理 xlsx 文件",
@@ -561,7 +561,7 @@
         ]
       }
     },
-    "/music/album/songs/{neteaseAlbumId}": {
+    "/admin/music/album/songs/{neteaseAlbumId}": {
       "get": {
         "operationId": "AlbumController_findSongsByNeteaseAlbumId",
         "summary": "根据网易云专辑ID查询下属歌曲",
@@ -585,7 +585,7 @@
         ]
       }
     },
-    "/music/song": {
+    "/admin/music/song": {
       "post": {
         "operationId": "SongController_create",
         "summary": "歌曲管理-创建",
@@ -633,7 +633,7 @@
         ]
       }
     },
-    "/music/song/list": {
+    "/admin/music/song/list": {
       "get": {
         "operationId": "SongController_findAll",
         "summary": "歌曲管理-列表",
@@ -723,7 +723,7 @@
         ]
       }
     },
-    "/music/song/{id}": {
+    "/admin/music/song/{id}": {
       "get": {
         "operationId": "SongController_findOne",
         "summary": "歌曲管理-详情",
@@ -747,7 +747,7 @@
         ]
       }
     },
-    "/music/song/{ids}": {
+    "/admin/music/song/{ids}": {
       "delete": {
         "operationId": "SongController_remove",
         "summary": "歌曲管理-删除",
@@ -771,7 +771,7 @@
         ]
       }
     },
-    "/music/song/export": {
+    "/admin/music/song/export": {
       "post": {
         "operationId": "SongController_export",
         "summary": "导出歌曲管理 xlsx 文件",
@@ -796,7 +796,7 @@
         ]
       }
     },
-    "/weibo/list": {
+    "/admin/weibo/list": {
       "get": {
         "operationId": "WeiboController_findAll",
         "summary": "获取微博列表",
@@ -873,7 +873,7 @@
         ]
       }
     },
-    "/weibo/{id}": {
+    "/admin/weibo/{id}": {
       "get": {
         "operationId": "WeiboController_findOne",
         "summary": "获取微博详情",
@@ -4932,6 +4932,56 @@
           }
         ]
       }
+    },
+    "/app/login": {
+      "post": {
+        "operationId": "AppApiController_login",
+        "summary": "APP用户登录",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppLoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "APP端接口"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/app/getInfo": {
+      "get": {
+        "operationId": "AppApiController_getInfo",
+        "summary": "获取当前登录用户个人信息",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "APP端接口"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
     }
   },
   "info": {
@@ -6651,6 +6701,21 @@
             "description": "消耗时间"
           }
         }
+      },
+      "AppLoginDto": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userName",
+          "password"
+        ]
       }
     }
   }

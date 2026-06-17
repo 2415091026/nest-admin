@@ -78,13 +78,13 @@
 
     <el-table v-loading="loading" :data="albumList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="专辑ID" align="center" prop="albumId" width="80" />
-      <el-table-column label="封面" align="center" prop="picUrl" width="100">
+      <el-table-column label="专辑名称" align="left" prop="name" :show-overflow-tooltip="true" />
+
+      <el-table-column label="封面" align="center" prop="picUrl" width="110">
         <template #default="scope">
-          <image-preview :src="scope.row.picUrl" width="50" height="50"/>
+          <image-preview :src="scope.row.picUrl" :width="60" :height="60"/>
         </template>
       </el-table-column>
-      <el-table-column label="专辑名称" align="center" prop="name" :show-overflow-tooltip="true" />
       <el-table-column label="歌手名称" align="center" prop="artistName" />
       <el-table-column label="网易云专辑ID" align="center" prop="neteaseAlbumId" />
       <el-table-column label="发行公司" align="center" prop="company" :show-overflow-tooltip="true" />
