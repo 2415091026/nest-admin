@@ -41,7 +41,6 @@ db:
     synchronize: true
     supportBigNumbers: true
     bigNumberStrings: true
-
 # redis 配置
 redis:
   host: 'localhost'
