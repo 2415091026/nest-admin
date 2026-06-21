@@ -723,6 +723,21 @@
         ]
       }
     },
+    "/admin/music/song/random": {
+      "get": {
+        "operationId": "SongController_findRandom",
+        "summary": "歌曲管理-游客随机获取三首",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "歌曲管理"
+        ]
+      }
+    },
     "/admin/music/song/{id}": {
       "get": {
         "operationId": "SongController_findOne",

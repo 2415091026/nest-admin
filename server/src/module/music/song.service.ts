@@ -54,6 +54,22 @@ export class SongService {
     });
   }
 
+  /**
+   * 随机获取指定数量的歌曲（免登录/游客兜底）
+   * @param limit 限制数量
+   */
+  async findRandom(limit: number = 3) {
+    const list = await this.songRepo
+      .createQueryBuilder('entity')
+      .where('entity.delFlag = :delFlag', { delFlag: '0' })
+      .andWhere('entity.status = :status', { status: '0' })
+      .orderBy('RAND()')
+      .take(limit)
+      .getMany();
+
+    return ResultData.ok(list);
+  }
+
   async findOne(songId: number) {
     const res = await this.songRepo.findOne({
       where: {
