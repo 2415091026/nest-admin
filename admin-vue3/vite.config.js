@@ -35,8 +35,8 @@ export default defineConfig(({ mode, command }) => {
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
         '/dev-api': {
-          // target: 'http://localhost:8080',
-          target: 'https://timefolding.online/prod-api/',
+          target: 'http://localhost:8080',
+          // target: 'https://timefolding.online/prod-api/',
           changeOrigin: true,
           rewrite: (p) => p.replace(/^\/dev-api/, '')
         }

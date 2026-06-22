@@ -15,6 +15,7 @@ import { MonitorModule } from './module/monitor/monitor.module';
 import { MusicModule } from './module/music/music.module';
 import { WeiboModule } from './module/weibo/weibo.module';
 import { AppApiModule } from './module/app/app.module';
+import { ForumModule } from './module/forum/forum.module';
 @Global()
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { AppApiModule } from './module/app/app.module';
     SystemModule,
     MonitorModule,
     AppApiModule,
+    ForumModule,
     RouterModule.register([
       {
         path: 'admin',
@@ -58,6 +60,7 @@ import { AppApiModule } from './module/app/app.module';
           MonitorModule,
           MusicModule,
           WeiboModule,
+          ForumModule,
         ],
       },
       {

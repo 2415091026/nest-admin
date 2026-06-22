@@ -4997,6 +4997,585 @@
           }
         ]
       }
+    },
+    "/admin/forum/stats": {
+      "get": {
+        "operationId": "ForumController_getStats",
+        "summary": "今日论坛发帖数与热帖 Top 5 看板",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/category": {
+      "post": {
+        "operationId": "ForumController_createCategory",
+        "summary": "板块分类-创建",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "ForumController_updateCategory",
+        "summary": "板块分类-更新",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/category/list": {
+      "get": {
+        "operationId": "ForumController_findAllCategories",
+        "summary": "板块分类-列表",
+        "parameters": [
+          {
+            "name": "pageNum",
+            "required": true,
+            "in": "query",
+            "description": "当前分页",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "description": "每页数量",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "orderByColumn",
+            "required": false,
+            "in": "query",
+            "description": "排序字段",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isAsc",
+            "required": false,
+            "in": "query",
+            "description": "排序规则",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "分类名称",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "状态（0正常 1停用）",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/category/{ids}": {
+      "delete": {
+        "operationId": "ForumController_removeCategory",
+        "summary": "板块分类-删除",
+        "parameters": [
+          {
+            "name": "ids",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/post": {
+      "post": {
+        "operationId": "ForumController_createPost",
+        "summary": "帖子管理-创建",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "ForumController_updatePost",
+        "summary": "帖子管理-更新",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/post/list": {
+      "get": {
+        "operationId": "ForumController_findAllPosts",
+        "summary": "帖子管理-列表",
+        "parameters": [
+          {
+            "name": "pageNum",
+            "required": true,
+            "in": "query",
+            "description": "当前分页",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "description": "每页数量",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "orderByColumn",
+            "required": false,
+            "in": "query",
+            "description": "排序字段",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isAsc",
+            "required": false,
+            "in": "query",
+            "description": "排序规则",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "required": false,
+            "in": "query",
+            "description": "分类板块ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "title",
+            "required": false,
+            "in": "query",
+            "description": "帖子标题（模糊查询）",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isTop",
+            "required": false,
+            "in": "query",
+            "description": "是否置顶（0否 1是）",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isEssence",
+            "required": false,
+            "in": "query",
+            "description": "是否精华（0否 1是）",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "状态（0正常 1停用）",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/post/{id}": {
+      "get": {
+        "operationId": "ForumController_findOnePost",
+        "summary": "帖子管理-详情 (会自动累加阅读量)",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/post/{ids}": {
+      "delete": {
+        "operationId": "ForumController_removePosts",
+        "summary": "帖子管理-删除",
+        "parameters": [
+          {
+            "name": "ids",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/comment": {
+      "post": {
+        "operationId": "ForumController_createComment",
+        "summary": "回帖管理-发布评论",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCommentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/comment/list/{postId}": {
+      "get": {
+        "operationId": "ForumController_findCommentsByPostId",
+        "summary": "回帖管理-获取某帖子的嵌套评论盖楼树",
+        "parameters": [
+          {
+            "name": "postId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/comment/{id}": {
+      "delete": {
+        "operationId": "ForumController_removeComment",
+        "summary": "回帖管理-删除评论",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/post/like/{id}": {
+      "post": {
+        "operationId": "ForumController_togglePostLike",
+        "summary": "帖子点赞 (Toggle)",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/post/collect/{id}": {
+      "post": {
+        "operationId": "ForumController_togglePostCollect",
+        "summary": "帖子收藏 (Toggle)",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/comment/like/{id}": {
+      "post": {
+        "operationId": "ForumController_toggleCommentLike",
+        "summary": "评论点赞 (Toggle)",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
     }
   },
   "info": {
@@ -5837,15 +6416,35 @@
       "CreatePostDto": {
         "type": "object",
         "properties": {
-          "remark": {
-            "type": "string"
+          "categoryId": {
+            "type": "number",
+            "description": "分类板块ID"
           },
-          "postSort": {
-            "type": "number"
+          "title": {
+            "type": "string",
+            "description": "帖子标题"
+          },
+          "content": {
+            "type": "string",
+            "description": "帖子正文内容"
+          },
+          "isTop": {
+            "type": "string",
+            "description": "是否置顶（0否 1是）"
+          },
+          "isEssence": {
+            "type": "string",
+            "description": "是否精华（0否 1是）"
+          },
+          "status": {
+            "type": "string",
+            "description": "状态（0正常 1停用）"
           }
         },
         "required": [
-          "postSort"
+          "categoryId",
+          "title",
+          "content"
         ]
       },
       "ListPostDto": {
@@ -5886,18 +6485,39 @@
       "UpdatePostDto": {
         "type": "object",
         "properties": {
-          "remark": {
-            "type": "string"
+          "categoryId": {
+            "type": "number",
+            "description": "分类板块ID"
           },
-          "postSort": {
-            "type": "number"
+          "title": {
+            "type": "string",
+            "description": "帖子标题"
+          },
+          "content": {
+            "type": "string",
+            "description": "帖子正文内容"
+          },
+          "isTop": {
+            "type": "string",
+            "description": "是否置顶（0否 1是）"
+          },
+          "isEssence": {
+            "type": "string",
+            "description": "是否精华（0否 1是）"
+          },
+          "status": {
+            "type": "string",
+            "description": "状态（0正常 1停用）"
           },
           "postId": {
-            "type": "number"
+            "type": "number",
+            "description": "帖子ID"
           }
         },
         "required": [
-          "postSort",
+          "categoryId",
+          "title",
+          "content",
           "postId"
         ]
       },
@@ -6730,6 +7350,72 @@
         "required": [
           "userName",
           "password"
+        ]
+      },
+      "CreateCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "分类名称"
+          },
+          "sort": {
+            "type": "number",
+            "description": "显示顺序"
+          },
+          "status": {
+            "type": "string",
+            "description": "状态（0正常 1停用）"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "分类名称"
+          },
+          "sort": {
+            "type": "number",
+            "description": "显示顺序"
+          },
+          "status": {
+            "type": "string",
+            "description": "状态（0正常 1停用）"
+          },
+          "categoryId": {
+            "type": "number",
+            "description": "分类ID"
+          }
+        },
+        "required": [
+          "name",
+          "categoryId"
+        ]
+      },
+      "CreateCommentDto": {
+        "type": "object",
+        "properties": {
+          "postId": {
+            "type": "number",
+            "description": "关联帖子ID"
+          },
+          "parentId": {
+            "type": "number",
+            "description": "父级评论ID（二级评论或回复时传）"
+          },
+          "content": {
+            "type": "string",
+            "description": "评论正文内容"
+          }
+        },
+        "required": [
+          "postId",
+          "content"
         ]
       }
     }
