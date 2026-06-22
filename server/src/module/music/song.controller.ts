@@ -3,6 +3,7 @@ import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
 import { SongService } from './song.service';
 import { CreateSongDto, UpdateSongDto, ListSongDto } from './dto/index';
 import { RequirePermission } from 'src/common/decorators/require-premission.decorator';
+import { NotRequireAuth } from 'src/module/system/user/user.decorator';
 import { Response } from 'express';
 
 @ApiTags('歌曲管理')
@@ -23,6 +24,13 @@ export class SongController {
   @Get('/list')
   findAll(@Query() query: ListSongDto) {
     return this.songService.findAll(query);
+  }
+
+  @ApiOperation({ summary: '歌曲管理-游客随机获取三首' })
+  @NotRequireAuth()
+  @Get('/random')
+  findRandom() {
+    return this.songService.findRandom(3);
   }
 
   @ApiOperation({ summary: '歌曲管理-详情' })
