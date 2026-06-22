@@ -9,6 +9,9 @@ import {
   UpdatePostDto,
   ListPostDto,
   CreateCommentDto,
+  CreatePostReportDto,
+  ListPostReportDto,
+  HandlePostReportDto,
 } from './dto/forum.dto';
 import { RequirePermission } from 'src/common/decorators/require-premission.decorator';
 import { User, UserDto } from 'src/module/system/user/user.decorator';
@@ -133,7 +136,7 @@ export class ForumController {
   @Post('/post/like/:id')
   @HttpCode(200)
   togglePostLike(@Param('id') id: string, @User() user: UserDto) {
-    return this.forumService.togglePostLike(+id, user.user.userId);
+    return this.forumService.togglePostLike(+id, user.user.userId, user.user.nickName || user.user.userName);
   }
 
   @ApiOperation({ summary: '帖子收藏 (Toggle)' })
@@ -151,4 +154,39 @@ export class ForumController {
   toggleCommentLike(@Param('id') id: string, @User() user: UserDto) {
     return this.forumService.toggleCommentLike(+id, user.user.userId);
   }
+
+  // ==================== 帖子举报接口 (Report) ====================
+
+  @ApiOperation({ summary: '帖子举报' })
+  @ApiBody({ type: CreatePostReportDto })
+  @RequirePermission('forum:post:report')
+  @Post('/post/report')
+  @HttpCode(200)
+  reportPost(@Body() dto: CreatePostReportDto, @User() user: UserDto) {
+    return this.forumService.reportPost(dto, user.user.userId, user.user.userName);
+  }
+
+  @ApiOperation({ summary: '帖子举报-列表' })
+  @RequirePermission('forum:post:report:list')
+  @Get('/post/report/list')
+  findReports(@Query() query: ListPostReportDto) {
+    return this.forumService.findReports(query);
+  }
+
+  @ApiOperation({ summary: '帖子举报-处理' })
+  @ApiBody({ type: HandlePostReportDto })
+  @RequirePermission('forum:post:report:handle')
+  @Put('/post/report/handle')
+  @HttpCode(200)
+  handleReport(@Body() dto: HandlePostReportDto, @User() user: UserDto) {
+    return this.forumService.handleReport(dto, user.user.userName);
+  }
+
+  @ApiOperation({ summary: '获取当前用户收藏帖子列表' })
+  @RequirePermission('forum:post:collect')
+  @Get('/post/collect/my')
+  findMyCollectedPosts(@User() user: UserDto) {
+    return this.forumService.findMyCollectedPosts(user.user.userId);
+  }
 }
+

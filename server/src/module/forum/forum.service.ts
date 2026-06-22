@@ -2,12 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In, Between } from 'typeorm';
 import { ResultData } from 'src/common/utils/result';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ForumCategoryEntity } from './entities/forum-category.entity';
 import { ForumPostEntity } from './entities/forum-post.entity';
 import { ForumCommentEntity } from './entities/forum-comment.entity';
 import { ForumPostLikeEntity } from './entities/forum-post-like.entity';
 import { ForumPostCollectEntity } from './entities/forum-post-collect.entity';
 import { ForumCommentLikeEntity } from './entities/forum-comment-like.entity';
+import { ForumPostReportEntity } from './entities/forum-post-report.entity';
 import {
   CreateCategoryDto,
   UpdateCategoryDto,
@@ -16,6 +18,9 @@ import {
   UpdatePostDto,
   ListPostDto,
   CreateCommentDto,
+  CreatePostReportDto,
+  ListPostReportDto,
+  HandlePostReportDto,
 } from './dto/forum.dto';
 import dayjs from 'dayjs';
 
@@ -34,6 +39,9 @@ export class ForumService {
     private readonly postCollectRepo: Repository<ForumPostCollectEntity>,
     @InjectRepository(ForumCommentLikeEntity)
     private readonly commentLikeRepo: Repository<ForumCommentLikeEntity>,
+    @InjectRepository(ForumPostReportEntity)
+    private readonly reportRepo: Repository<ForumPostReportEntity>,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   // ==================== 论坛看版数据统计 ====================
@@ -158,6 +166,21 @@ export class ForumService {
     }
     if (query.status) {
       qb.andWhere('post.status = :status', { status: query.status });
+    }
+    if (query.userId) {
+      qb.andWhere('post.userId = :userId', { userId: Number(query.userId) });
+    }
+    if (query.excludeReported === '1') {
+      qb.andWhere((subQuery) => {
+        const sub = subQuery
+          .subQuery()
+          .select('1')
+          .from(ForumPostReportEntity, 'report')
+          .where('report.postId = post.postId')
+          .andWhere('report.delFlag = :reportDelFlag', { reportDelFlag: '0' })
+          .getQuery();
+        return `NOT EXISTS ${sub}`;
+      });
     }
 
     // 默认置顶帖子展示在最前面，其次按创建时间降序
@@ -330,10 +353,7 @@ export class ForumService {
 
   // ==================== 点赞与收藏业务逻辑 (Like & Collect) ====================
 
-  /**
-   * 帖子点赞/取消点赞 Toggle
-   */
-  async togglePostLike(postId: number, userId: number) {
+  async togglePostLike(postId: number, userId: number, userName: string) {
     const exist = await this.postLikeRepo.findOne({ where: { postId, userId } });
     if (exist) {
       await this.postLikeRepo.delete({ id: exist.id });
@@ -343,6 +363,19 @@ export class ForumService {
       const newLike = this.postLikeRepo.create({ postId, userId });
       await this.postLikeRepo.save(newLike);
       await this.postRepo.increment({ postId }, 'likeCount', 1);
+
+      // 异步派发帖子被点赞事件，以便生成系统交互提醒消息
+      const post = await this.postRepo.findOne({ where: { postId } });
+      if (post) {
+        this.eventEmitter.emit('forum.post.liked', {
+          postId,
+          userId,
+          userName,
+          authorId: post.userId,
+          postTitle: post.title,
+        });
+      }
+
       return ResultData.ok({ isLiked: true });
     }
   }
@@ -380,4 +413,121 @@ export class ForumService {
       return ResultData.ok({ isLiked: true });
     }
   }
+
+  // ==================== 帖子举报业务管理 (Report) ====================
+
+  /**
+   * 举报帖子
+   */
+  async reportPost(dto: CreatePostReportDto, userId: number, username: string) {
+    const post = await this.postRepo.findOne({
+      where: { postId: dto.postId, delFlag: '0' },
+    });
+    if (!post) {
+      return ResultData.fail(400, '该帖子不存在或已被删除');
+    }
+    const report = this.reportRepo.create({
+      ...dto,
+      userId,
+      createBy: username,
+      updateBy: username,
+    });
+    await this.reportRepo.save(report);
+    return ResultData.ok();
+  }
+
+  /**
+   * 分页获取帖子举报列表
+   */
+  async findReports(query: ListPostReportDto) {
+    const qb = this.reportRepo.createQueryBuilder('report')
+      .leftJoinAndSelect('report.user', 'user')
+      .leftJoinAndSelect('report.post', 'post')
+      .where('report.delFlag = :delFlag', { delFlag: '0' });
+
+    if (query.postId) {
+      qb.andWhere('report.postId = :postId', { postId: query.postId });
+    }
+    if (query.status) {
+      qb.andWhere('report.status = :status', { status: query.status });
+    }
+
+    // 按举报时间倒序排列
+    qb.orderBy('report.createTime', 'DESC');
+
+    if (query.pageSize && query.pageNum) {
+      qb.skip(query.pageSize * (query.pageNum - 1)).take(query.pageSize);
+    }
+
+    const [list, total] = await qb.getManyAndCount();
+
+    list.forEach((report) => {
+      if (report.user) {
+        delete report.user.password;
+      }
+    });
+
+    return ResultData.ok({ list, total });
+  }
+
+  async handleReport(dto: HandlePostReportDto, username: string) {
+    const report = await this.reportRepo.findOne({
+      where: { reportId: dto.reportId, delFlag: '0' },
+    });
+    if (!report) {
+      return ResultData.fail(400, '该举报记录不存在');
+    }
+    await this.reportRepo.update(
+      { reportId: dto.reportId },
+      {
+        status: dto.status,
+        updateBy: username,
+      },
+    );
+
+    // 异步派发帖子举报完成事件以触发消息下发与实时推送
+    const post = await this.postRepo.findOne({ where: { postId: report.postId } });
+    if (post) {
+      this.eventEmitter.emit('forum.report.processed', {
+        postId: report.postId,
+        reporterId: report.userId,
+        authorId: post.userId,
+        postTitle: post.title,
+        action: dto.status === '1' ? '下架' : '解除争议',
+        reason: report.reason,
+      });
+    }
+
+    return ResultData.ok();
+  }
+
+  /**
+   * 获取当前用户收藏的所有帖子
+   */
+  async findMyCollectedPosts(userId: number) {
+    const collects = await this.postCollectRepo.find({
+      where: { userId },
+      select: ['postId'],
+    });
+    if (collects.length === 0) {
+      return ResultData.ok({ list: [], total: 0 });
+    }
+    const postIds = collects.map((c) => c.postId);
+    const posts = await this.postRepo.find({
+      where: {
+        postId: In(postIds),
+        delFlag: '0',
+        status: '0',
+      },
+      relations: ['user'],
+      order: { createTime: 'DESC' },
+    });
+    posts.forEach((post) => {
+      if (post.user) {
+        delete post.user.password;
+      }
+    });
+    return ResultData.ok({ list: posts, total: posts.length });
+  }
 }
+

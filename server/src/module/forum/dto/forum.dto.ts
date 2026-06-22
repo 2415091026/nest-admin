@@ -112,7 +112,19 @@ export class ListPostDto extends PagingDto {
   @IsOptional()
   @IsString()
   public status?: string;
+
+  @ApiProperty({ description: '是否排除已举报帖子（1是 0否）', required: false })
+  @IsOptional()
+  @IsString()
+  public excludeReported?: string;
+
+  @ApiProperty({ description: '发帖人用户ID', required: false })
+  @IsOptional()
+  @IsString()
+  public userId?: string;
 }
+
+
 
 // ==================== 论坛回帖评论 DTO ====================
 
@@ -132,3 +144,50 @@ export class CreateCommentDto {
   @IsNotEmpty({ message: '评论正文不能为空' })
   public content: string;
 }
+
+// ==================== 论坛帖子举报 DTO ====================
+
+export class CreatePostReportDto {
+  @ApiProperty({ description: '帖子ID', required: true })
+  @IsNumber()
+  @IsNotEmpty({ message: '帖子ID不能为空' })
+  public postId: number;
+
+  @ApiProperty({ description: '举报原因', required: true })
+  @IsString()
+  @IsNotEmpty({ message: '举报原因不能为空' })
+  @Length(1, 100)
+  public reason: string;
+
+  @ApiProperty({ description: '举报详细说明', required: false })
+  @IsOptional()
+  @IsString()
+  @Length(0, 500)
+  public content?: string;
+}
+
+export class ListPostReportDto extends PagingDto {
+  @ApiProperty({ description: '帖子ID', required: false })
+  @IsOptional()
+  @IsNumber()
+  public postId?: number;
+
+  @ApiProperty({ description: '处理状态（0未处理 1已处理）', required: false })
+  @IsOptional()
+  @IsString()
+  public status?: string;
+}
+
+export class HandlePostReportDto {
+  @ApiProperty({ description: '举报ID', required: true })
+  @IsNumber()
+  @IsNotEmpty({ message: '举报ID不能为空' })
+  public reportId: number;
+
+  @ApiProperty({ description: '处理状态（0未处理 1已处理）', required: true })
+  @IsString()
+  @IsNotEmpty({ message: '状态不能为空' })
+  @Length(1, 1)
+  public status: string;
+}
+

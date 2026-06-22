@@ -3828,6 +3828,133 @@
         ]
       }
     },
+    "/admin/system/message/list": {
+      "get": {
+        "operationId": "MessageController_findAll",
+        "summary": "获取当前用户的消息列表",
+        "parameters": [
+          {
+            "name": "pageNum",
+            "required": true,
+            "in": "query",
+            "description": "当前分页",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "description": "每页数量",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "orderByColumn",
+            "required": false,
+            "in": "query",
+            "description": "排序字段",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isAsc",
+            "required": false,
+            "in": "query",
+            "description": "排序规则",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "messageType",
+            "required": false,
+            "in": "query",
+            "description": "消息大类（1系统公告 2社交互动 3业务提醒）",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "readStatus",
+            "required": false,
+            "in": "query",
+            "description": "阅读状态（0未读 1已读）",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "消息中心"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/system/message/read": {
+      "put": {
+        "operationId": "MessageController_markAsRead",
+        "summary": "批量标记系统消息为已读状态",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReadMessageDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "消息中心"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/system/message/unread/count": {
+      "get": {
+        "operationId": "MessageController_getUnreadCount",
+        "summary": "获取当前登录用户的全部未读消息总数",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "消息中心"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
     "/admin/monitor/job/list": {
       "get": {
         "operationId": "JobController_list",
@@ -5327,6 +5454,24 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "excludeReported",
+            "required": false,
+            "in": "query",
+            "description": "是否排除已举报帖子（1是 0否）",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": false,
+            "in": "query",
+            "description": "发帖人用户ID",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -5562,6 +5707,163 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/post/report": {
+      "post": {
+        "operationId": "ForumController_reportPost",
+        "summary": "帖子举报",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePostReportDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/post/report/list": {
+      "get": {
+        "operationId": "ForumController_findReports",
+        "summary": "帖子举报-列表",
+        "parameters": [
+          {
+            "name": "pageNum",
+            "required": true,
+            "in": "query",
+            "description": "当前分页",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "description": "每页数量",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "orderByColumn",
+            "required": false,
+            "in": "query",
+            "description": "排序字段",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isAsc",
+            "required": false,
+            "in": "query",
+            "description": "排序规则",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "postId",
+            "required": false,
+            "in": "query",
+            "description": "帖子ID",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "处理状态（0未处理 1已处理）",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/post/report/handle": {
+      "put": {
+        "operationId": "ForumController_handleReport",
+        "summary": "帖子举报-处理",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HandlePostReportDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/post/collect/my": {
+      "get": {
+        "operationId": "ForumController_findMyCollectedPosts",
+        "summary": "获取当前用户收藏帖子列表",
+        "parameters": [],
         "responses": {
           "200": {
             "description": ""
@@ -6957,6 +7259,21 @@
           "pageSize"
         ]
       },
+      "ReadMessageDto": {
+        "type": "object",
+        "properties": {
+          "messageIds": {
+            "description": "消息ID列表",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "messageIds"
+        ]
+      },
       "CreateJobDto": {
         "type": "object",
         "properties": {
@@ -7416,6 +7733,44 @@
         "required": [
           "postId",
           "content"
+        ]
+      },
+      "CreatePostReportDto": {
+        "type": "object",
+        "properties": {
+          "postId": {
+            "type": "number",
+            "description": "帖子ID"
+          },
+          "reason": {
+            "type": "string",
+            "description": "举报原因"
+          },
+          "content": {
+            "type": "string",
+            "description": "举报详细说明"
+          }
+        },
+        "required": [
+          "postId",
+          "reason"
+        ]
+      },
+      "HandlePostReportDto": {
+        "type": "object",
+        "properties": {
+          "reportId": {
+            "type": "number",
+            "description": "举报ID"
+          },
+          "status": {
+            "type": "string",
+            "description": "处理状态（0未处理 1已处理）"
+          }
+        },
+        "required": [
+          "reportId",
+          "status"
         ]
       }
     }

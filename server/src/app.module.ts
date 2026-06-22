@@ -16,9 +16,12 @@ import { MusicModule } from './module/music/music.module';
 import { WeiboModule } from './module/weibo/weibo.module';
 import { AppApiModule } from './module/app/app.module';
 import { ForumModule } from './module/forum/forum.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 @Global()
 @Module({
   imports: [
+    // 事件总线模块
+    EventEmitterModule.forRoot(),
     // 配置模块
     ConfigModule.forRoot({
       cache: true,

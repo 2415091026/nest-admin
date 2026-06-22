@@ -49,7 +49,7 @@ export class UserService {
     private readonly jwtService: JwtService,
     private readonly redisService: RedisService,
     private readonly configService: ConfigService,
-  ) {}
+  ) { }
   /**
    * 后台创建用户
    * @param createUserDto
@@ -320,6 +320,7 @@ export class UserService {
       },
       select: ['userId', 'password'],
     });
+    if (!data) return ResultData.fail(422, `用户不存在`);
     this.clearCacheByUserId(data.userId);
 
     if (!(data && bcrypt.compareSync(user.password, data.password))) {

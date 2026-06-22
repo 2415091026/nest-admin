@@ -10,6 +10,7 @@ import { PostModule } from './post/post.module';
 import { RoleModule } from './role/role.module';
 import { ToolModule } from './tool/tool.module';
 import { UserModule } from './user/user.module';
+import { MessageModule } from './message/message.module';
 
 @Global()
 @Module({
@@ -24,6 +25,7 @@ import { UserModule } from './user/user.module';
     RoleModule,
     ToolModule,
     UserModule,
+    MessageModule,
     RouterModule.register([
       {
         path: 'admin',
@@ -37,10 +39,12 @@ import { UserModule } from './user/user.module';
           RoleModule,
           ToolModule,
           UserModule,
+          MessageModule,
         ],
       },
     ]),
   ],
 })
 export class SystemModule {}
+
 
