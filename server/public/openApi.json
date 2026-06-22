@@ -902,7 +902,7 @@
         ]
       }
     },
-    "/system/config": {
+    "/admin/system/config": {
       "post": {
         "operationId": "ConfigController_create",
         "summary": "参数设置-创建",
@@ -960,7 +960,7 @@
         ]
       }
     },
-    "/system/config/list": {
+    "/admin/system/config/list": {
       "get": {
         "operationId": "ConfigController_findAll",
         "summary": "参数设置-列表",
@@ -1029,7 +1029,7 @@
         ]
       }
     },
-    "/system/config/{id}": {
+    "/admin/system/config/{id}": {
       "get": {
         "operationId": "ConfigController_findOne",
         "summary": "参数设置-详情(id)",
@@ -1085,7 +1085,7 @@
         ]
       }
     },
-    "/system/config/configKey/{id}": {
+    "/admin/system/config/configKey/{id}": {
       "get": {
         "operationId": "ConfigController_findOneByconfigKey",
         "summary": "参数设置-详情(configKey)【走缓存】",
@@ -1114,7 +1114,7 @@
         ]
       }
     },
-    "/system/config/refreshCache": {
+    "/admin/system/config/refreshCache": {
       "delete": {
         "operationId": "ConfigController_refreshCache",
         "summary": "参数设置-刷新缓存",
@@ -1134,7 +1134,7 @@
         ]
       }
     },
-    "/system/config/export": {
+    "/admin/system/config/export": {
       "post": {
         "operationId": "ConfigController_export",
         "summary": "导出参数管理为xlsx文件",
@@ -1164,7 +1164,7 @@
         ]
       }
     },
-    "/system/dept": {
+    "/admin/system/dept": {
       "post": {
         "operationId": "DeptController_create",
         "summary": "部门管理-创建",
@@ -1222,7 +1222,7 @@
         ]
       }
     },
-    "/system/dept/list": {
+    "/admin/system/dept/list": {
       "get": {
         "operationId": "DeptController_findAll",
         "summary": "部门管理-列表",
@@ -1259,7 +1259,7 @@
         ]
       }
     },
-    "/system/dept/{id}": {
+    "/admin/system/dept/{id}": {
       "get": {
         "operationId": "DeptController_findOne",
         "summary": "部门管理-详情",
@@ -1315,7 +1315,7 @@
         ]
       }
     },
-    "/system/dept/list/exclude/{id}": {
+    "/admin/system/dept/list/exclude/{id}": {
       "get": {
         "operationId": "DeptController_findListExclude",
         "summary": "部门管理-黑名单",
@@ -1344,7 +1344,7 @@
         ]
       }
     },
-    "/system/dict/type": {
+    "/admin/system/dict/type": {
       "post": {
         "operationId": "DictController_createType",
         "summary": "字典类型-创建",
@@ -1402,7 +1402,7 @@
         ]
       }
     },
-    "/system/dict/type/refreshCache": {
+    "/admin/system/dict/type/refreshCache": {
       "delete": {
         "operationId": "DictController_refreshCache",
         "summary": "字典数据-刷新缓存",
@@ -1422,7 +1422,7 @@
         ]
       }
     },
-    "/system/dict/type/{id}": {
+    "/admin/system/dict/type/{id}": {
       "delete": {
         "operationId": "DictController_deleteType",
         "summary": "字典类型-删除",
@@ -1478,7 +1478,7 @@
         ]
       }
     },
-    "/system/dict/type/list": {
+    "/admin/system/dict/type/list": {
       "get": {
         "operationId": "DictController_findAllType",
         "summary": "字典类型-列表",
@@ -1537,7 +1537,7 @@
         ]
       }
     },
-    "/system/dict/type/optionselect": {
+    "/admin/system/dict/type/optionselect": {
       "get": {
         "operationId": "DictController_findOptionselect",
         "summary": "全部字典类型-下拉数据",
@@ -1557,7 +1557,7 @@
         ]
       }
     },
-    "/system/dict/data": {
+    "/admin/system/dict/data": {
       "post": {
         "operationId": "DictController_createDictData",
         "summary": "字典数据-创建",
@@ -1615,7 +1615,7 @@
         ]
       }
     },
-    "/system/dict/data/{id}": {
+    "/admin/system/dict/data/{id}": {
       "delete": {
         "operationId": "DictController_deleteDictData",
         "summary": "字典数据-删除",
@@ -1671,7 +1671,7 @@
         ]
       }
     },
-    "/system/dict/data/list": {
+    "/admin/system/dict/data/list": {
       "get": {
         "operationId": "DictController_findAllData",
         "summary": "字典数据-列表",
@@ -1730,7 +1730,7 @@
         ]
       }
     },
-    "/system/dict/data/type/{id}": {
+    "/admin/system/dict/data/type/{id}": {
       "get": {
         "operationId": "DictController_findOneDataType",
         "summary": "字典数据-类型-详情【走缓存】",
@@ -1759,7 +1759,7 @@
         ]
       }
     },
-    "/system/dict/type/export": {
+    "/admin/system/dict/type/export": {
       "post": {
         "operationId": "DictController_export",
         "summary": "导出字典组为xlsx文件",
@@ -1789,7 +1789,7 @@
         ]
       }
     },
-    "/system/dict/data/export": {
+    "/admin/system/dict/data/export": {
       "post": {
         "operationId": "DictController_exportData",
         "summary": "导出字典内容为xlsx文件",
@@ -1819,7 +1819,7 @@
         ]
       }
     },
-    "/system/menu": {
+    "/admin/system/menu": {
       "post": {
         "operationId": "MenuController_create",
         "summary": "菜单管理-创建",
@@ -1877,7 +1877,7 @@
         ]
       }
     },
-    "/system/menu/list": {
+    "/admin/system/menu/list": {
       "get": {
         "operationId": "MenuController_findAll",
         "summary": "菜单管理-列表",
@@ -1914,7 +1914,7 @@
         ]
       }
     },
-    "/system/menu/treeselect": {
+    "/admin/system/menu/treeselect": {
       "get": {
         "operationId": "MenuController_treeSelect",
         "summary": "菜单管理-树表",
@@ -1934,7 +1934,7 @@
         ]
       }
     },
-    "/system/menu/roleMenuTreeselect/{menuId}": {
+    "/admin/system/menu/roleMenuTreeselect/{menuId}": {
       "get": {
         "operationId": "MenuController_roleMenuTreeselect",
         "summary": "菜单管理-角色-树表",
@@ -1963,7 +1963,7 @@
         ]
       }
     },
-    "/system/menu/{menuId}": {
+    "/admin/system/menu/{menuId}": {
       "get": {
         "operationId": "MenuController_findOne",
         "summary": "菜单管理-详情",
@@ -2019,7 +2019,7 @@
         ]
       }
     },
-    "/system/notice": {
+    "/admin/system/notice": {
       "post": {
         "operationId": "NoticeController_create",
         "summary": "通知公告-创建",
@@ -2077,7 +2077,7 @@
         ]
       }
     },
-    "/system/notice/list": {
+    "/admin/system/notice/list": {
       "get": {
         "operationId": "NoticeController_findAll",
         "summary": "通知公告-列表",
@@ -2146,7 +2146,7 @@
         ]
       }
     },
-    "/system/notice/{id}": {
+    "/admin/system/notice/{id}": {
       "get": {
         "operationId": "NoticeController_findOne",
         "summary": "通知公告-详情",
@@ -2202,7 +2202,7 @@
         ]
       }
     },
-    "/system/post": {
+    "/admin/system/post": {
       "post": {
         "operationId": "PostController_create",
         "summary": "岗位管理-创建",
@@ -2260,7 +2260,7 @@
         ]
       }
     },
-    "/system/post/list": {
+    "/admin/system/post/list": {
       "get": {
         "operationId": "PostController_findAll",
         "summary": "岗位管理-列表",
@@ -2329,7 +2329,7 @@
         ]
       }
     },
-    "/system/post/{id}": {
+    "/admin/system/post/{id}": {
       "get": {
         "operationId": "PostController_findOne",
         "summary": "岗位管理-详情",
@@ -2358,7 +2358,7 @@
         ]
       }
     },
-    "/system/post/{ids}": {
+    "/admin/system/post/{ids}": {
       "delete": {
         "operationId": "PostController_remove",
         "summary": "岗位管理-删除",
@@ -2387,7 +2387,7 @@
         ]
       }
     },
-    "/system/post/export": {
+    "/admin/system/post/export": {
       "post": {
         "operationId": "PostController_export",
         "summary": "导出岗位管理xlsx文件",
@@ -2417,7 +2417,7 @@
         ]
       }
     },
-    "/system/role": {
+    "/admin/system/role": {
       "post": {
         "operationId": "RoleController_create",
         "summary": "角色管理-创建",
@@ -2475,7 +2475,7 @@
         ]
       }
     },
-    "/system/role/list": {
+    "/admin/system/role/list": {
       "get": {
         "operationId": "RoleController_findAll",
         "summary": "角色管理-列表",
@@ -2544,7 +2544,7 @@
         ]
       }
     },
-    "/system/role/deptTree/{id}": {
+    "/admin/system/role/deptTree/{id}": {
       "get": {
         "operationId": "RoleController_deptTree",
         "summary": "角色管理-部门树",
@@ -2573,7 +2573,7 @@
         ]
       }
     },
-    "/system/role/{id}": {
+    "/admin/system/role/{id}": {
       "get": {
         "operationId": "RoleController_findOne",
         "summary": "角色管理-详情",
@@ -2628,7 +2628,7 @@
         ]
       }
     },
-    "/system/role/dataScope": {
+    "/admin/system/role/dataScope": {
       "put": {
         "operationId": "RoleController_dataScope",
         "summary": "角色管理-数据权限修改",
@@ -2658,7 +2658,7 @@
         ]
       }
     },
-    "/system/role/changeStatus": {
+    "/admin/system/role/changeStatus": {
       "put": {
         "operationId": "RoleController_changeStatus",
         "summary": "角色管理-停用角色",
@@ -2688,7 +2688,7 @@
         ]
       }
     },
-    "/system/role/authUser/allocatedList": {
+    "/admin/system/role/authUser/allocatedList": {
       "get": {
         "operationId": "RoleController_authUserAllocatedList",
         "summary": "角色管理-角色已分配用户列表",
@@ -2781,7 +2781,7 @@
         ]
       }
     },
-    "/system/role/authUser/unallocatedList": {
+    "/admin/system/role/authUser/unallocatedList": {
       "get": {
         "operationId": "RoleController_authUserUnAllocatedList",
         "summary": "角色管理-角色未分配用户列表",
@@ -2874,7 +2874,7 @@
         ]
       }
     },
-    "/system/role/authUser/cancel": {
+    "/admin/system/role/authUser/cancel": {
       "put": {
         "operationId": "RoleController_authUserCancel",
         "summary": "角色管理-解绑角色",
@@ -2904,7 +2904,7 @@
         ]
       }
     },
-    "/system/role/authUser/cancelAll": {
+    "/admin/system/role/authUser/cancelAll": {
       "put": {
         "operationId": "RoleController_authUserCancelAll",
         "summary": "角色管理-批量解绑角色",
@@ -2934,7 +2934,7 @@
         ]
       }
     },
-    "/system/role/authUser/selectAll": {
+    "/admin/system/role/authUser/selectAll": {
       "put": {
         "operationId": "RoleController_authUserSelectAll",
         "summary": "角色管理-批量绑定角色",
@@ -2964,7 +2964,7 @@
         ]
       }
     },
-    "/system/role/export": {
+    "/admin/system/role/export": {
       "post": {
         "operationId": "RoleController_export",
         "summary": "导出角色管理xlsx文件",
@@ -2994,7 +2994,7 @@
         ]
       }
     },
-    "/tool/gen/list": {
+    "/admin/tool/gen/list": {
       "get": {
         "operationId": "ToolController_findAll",
         "summary": "数据表列表",
@@ -3053,7 +3053,7 @@
         ]
       }
     },
-    "/tool/gen/db/list": {
+    "/admin/tool/gen/db/list": {
       "get": {
         "operationId": "ToolController_genDbList",
         "summary": "查询数据库列表",
@@ -3112,7 +3112,7 @@
         ]
       }
     },
-    "/tool/gen/importTable": {
+    "/admin/tool/gen/importTable": {
       "post": {
         "operationId": "ToolController_genImportTable",
         "summary": "导入表",
@@ -3142,7 +3142,7 @@
         ]
       }
     },
-    "/tool/gen/synchDb/{tableName}": {
+    "/admin/tool/gen/synchDb/{tableName}": {
       "get": {
         "operationId": "ToolController_synchDb",
         "summary": "同步表",
@@ -3171,7 +3171,7 @@
         ]
       }
     },
-    "/tool/gen/{id}": {
+    "/admin/tool/gen/{id}": {
       "get": {
         "operationId": "ToolController_gen",
         "summary": "查询表详细信息",
@@ -3227,7 +3227,7 @@
         ]
       }
     },
-    "/tool/gen": {
+    "/admin/tool/gen": {
       "put": {
         "operationId": "ToolController_genUpdate",
         "summary": "修改代码生成信息",
@@ -3257,7 +3257,7 @@
         ]
       }
     },
-    "/tool/gen/batchGenCode/zip": {
+    "/admin/tool/gen/batchGenCode/zip": {
       "get": {
         "operationId": "ToolController_batchGenCode",
         "summary": "生成代码",
@@ -3286,7 +3286,7 @@
         ]
       }
     },
-    "/tool/gen/preview/{id}": {
+    "/admin/tool/gen/preview/{id}": {
       "get": {
         "operationId": "ToolController_preview",
         "summary": "查看代码",
@@ -3315,7 +3315,7 @@
         ]
       }
     },
-    "/system/user/profile": {
+    "/admin/system/user/profile": {
       "get": {
         "operationId": "UserController_profile",
         "summary": "个人中心-用户信息",
@@ -3363,7 +3363,7 @@
         ]
       }
     },
-    "/system/user/profile/avatar": {
+    "/admin/system/user/profile/avatar": {
       "post": {
         "operationId": "UserController_avatar",
         "summary": "个人中心-上传用户头像",
@@ -3383,7 +3383,7 @@
         ]
       }
     },
-    "/system/user/profile/updatePwd": {
+    "/admin/system/user/profile/updatePwd": {
       "put": {
         "operationId": "UserController_updatePwd",
         "summary": "个人中心-修改密码",
@@ -3413,7 +3413,7 @@
         ]
       }
     },
-    "/system/user": {
+    "/admin/system/user": {
       "post": {
         "operationId": "UserController_create",
         "summary": "用户-创建",
@@ -3489,7 +3489,7 @@
         ]
       }
     },
-    "/system/user/list": {
+    "/admin/system/user/list": {
       "get": {
         "operationId": "UserController_findAll",
         "summary": "用户-列表",
@@ -3596,7 +3596,7 @@
         ]
       }
     },
-    "/system/user/deptTree": {
+    "/admin/system/user/deptTree": {
       "get": {
         "operationId": "UserController_deptTree",
         "summary": "用户-部门树",
@@ -3616,7 +3616,7 @@
         ]
       }
     },
-    "/system/user/authRole/{id}": {
+    "/admin/system/user/authRole/{id}": {
       "get": {
         "operationId": "UserController_authRole",
         "summary": "用户-分配角色-详情",
@@ -3645,7 +3645,7 @@
         ]
       }
     },
-    "/system/user/authRole": {
+    "/admin/system/user/authRole": {
       "put": {
         "operationId": "UserController_updateAuthRole",
         "summary": "用户-角色信息-更新",
@@ -3665,7 +3665,7 @@
         ]
       }
     },
-    "/system/user/{userId}": {
+    "/admin/system/user/{userId}": {
       "get": {
         "operationId": "UserController_findOne",
         "summary": "用户-详情",
@@ -3694,7 +3694,7 @@
         ]
       }
     },
-    "/system/user/changeStatus": {
+    "/admin/system/user/changeStatus": {
       "put": {
         "operationId": "UserController_changeStatus",
         "summary": "用户-停用角色",
@@ -3724,7 +3724,7 @@
         ]
       }
     },
-    "/system/user/resetPwd": {
+    "/admin/system/user/resetPwd": {
       "put": {
         "operationId": "UserController_resetPwd",
         "summary": "用户-重置密码",
@@ -3754,7 +3754,7 @@
         ]
       }
     },
-    "/system/user/{id}": {
+    "/admin/system/user/{id}": {
       "delete": {
         "operationId": "UserController_remove",
         "summary": "用户-删除",
@@ -3783,7 +3783,7 @@
         ]
       }
     },
-    "/system/user/export": {
+    "/admin/system/user/export": {
       "post": {
         "operationId": "UserController_export",
         "summary": "导出用户信息数据为xlsx",
@@ -3813,7 +3813,7 @@
         ]
       }
     },
-    "/monitor/job/list": {
+    "/admin/monitor/job/list": {
       "get": {
         "operationId": "JobController_list",
         "summary": "获取定时任务列表",
@@ -3833,7 +3833,7 @@
         ]
       }
     },
-    "/monitor/job/{jobId}": {
+    "/admin/monitor/job/{jobId}": {
       "get": {
         "operationId": "JobController_getInfo",
         "summary": "获取定时任务详细信息",
@@ -3862,7 +3862,7 @@
         ]
       }
     },
-    "/monitor/job": {
+    "/admin/monitor/job": {
       "post": {
         "operationId": "JobController_add",
         "summary": "创建定时任务",
@@ -3910,7 +3910,7 @@
         ]
       }
     },
-    "/monitor/job/changeStatus": {
+    "/admin/monitor/job/changeStatus": {
       "put": {
         "operationId": "JobController_changeStatus",
         "summary": "修改任务状态",
@@ -3930,7 +3930,7 @@
         ]
       }
     },
-    "/monitor/job/{jobIds}": {
+    "/admin/monitor/job/{jobIds}": {
       "delete": {
         "operationId": "JobController_remove",
         "summary": "删除定时任务",
@@ -3959,7 +3959,7 @@
         ]
       }
     },
-    "/monitor/job/run": {
+    "/admin/monitor/job/run": {
       "put": {
         "operationId": "JobController_run",
         "summary": "立即执行一次",
@@ -3979,7 +3979,7 @@
         ]
       }
     },
-    "/monitor/job/export": {
+    "/admin/monitor/job/export": {
       "post": {
         "operationId": "JobController_export",
         "summary": "导出定时任务为xlsx文件",
@@ -4009,7 +4009,7 @@
         ]
       }
     },
-    "/monitor/jobLog/list": {
+    "/admin/monitor/jobLog/list": {
       "get": {
         "operationId": "JobLogController_list",
         "summary": "获取定时任务日志列表",
@@ -4095,7 +4095,7 @@
         ]
       }
     },
-    "/monitor/jobLog/clean": {
+    "/admin/monitor/jobLog/clean": {
       "delete": {
         "operationId": "JobLogController_clean",
         "summary": "清空定时任务日志",
@@ -4115,7 +4115,7 @@
         ]
       }
     },
-    "/monitor/jobLog/export": {
+    "/admin/monitor/jobLog/export": {
       "post": {
         "operationId": "JobLogController_export",
         "summary": "导出调度日志为xlsx文件",
@@ -4145,7 +4145,7 @@
         ]
       }
     },
-    "/monitor/server": {
+    "/admin/monitor/server": {
       "get": {
         "operationId": "ServerController_getInfo",
         "summary": "在线用户-列表",
@@ -4165,7 +4165,7 @@
         ]
       }
     },
-    "/monitor/cache": {
+    "/admin/monitor/cache": {
       "get": {
         "operationId": "CacheController_getInfo",
         "summary": "缓存监控信息",
@@ -4185,7 +4185,7 @@
         ]
       }
     },
-    "/monitor/cache/getNames": {
+    "/admin/monitor/cache/getNames": {
       "get": {
         "operationId": "CacheController_getNames",
         "summary": "缓存列表",
@@ -4205,7 +4205,7 @@
         ]
       }
     },
-    "/monitor/cache/getKeys/{id}": {
+    "/admin/monitor/cache/getKeys/{id}": {
       "get": {
         "operationId": "CacheController_getKeys",
         "summary": "键名列表",
@@ -4234,7 +4234,7 @@
         ]
       }
     },
-    "/monitor/cache/getValue/{cacheName}/{cacheKey}": {
+    "/admin/monitor/cache/getValue/{cacheName}/{cacheKey}": {
       "get": {
         "operationId": "CacheController_getValue",
         "summary": "缓存内容",
@@ -4254,7 +4254,7 @@
         ]
       }
     },
-    "/monitor/cache/clearCacheName/{cacheName}": {
+    "/admin/monitor/cache/clearCacheName/{cacheName}": {
       "delete": {
         "operationId": "CacheController_clearCacheName",
         "summary": "清理缓存名称",
@@ -4283,7 +4283,7 @@
         ]
       }
     },
-    "/monitor/cache/clearCacheKey/{cacheKey}": {
+    "/admin/monitor/cache/clearCacheKey/{cacheKey}": {
       "delete": {
         "operationId": "CacheController_clearCacheKey",
         "summary": "清理缓存键名",
@@ -4312,7 +4312,7 @@
         ]
       }
     },
-    "/monitor/cache/clearCacheAll": {
+    "/admin/monitor/cache/clearCacheAll": {
       "delete": {
         "operationId": "CacheController_clearCacheAll",
         "summary": "清理全部",
@@ -4332,7 +4332,7 @@
         ]
       }
     },
-    "/monitor/logininfor/list": {
+    "/admin/monitor/logininfor/list": {
       "get": {
         "operationId": "LoginlogController_findAll",
         "summary": "登录日志-列表",
@@ -4425,7 +4425,7 @@
         ]
       }
     },
-    "/monitor/logininfor/clean": {
+    "/admin/monitor/logininfor/clean": {
       "delete": {
         "operationId": "LoginlogController_removeAll",
         "summary": "登录日志-清除全部日志",
@@ -4445,7 +4445,7 @@
         ]
       }
     },
-    "/monitor/logininfor/{id}": {
+    "/admin/monitor/logininfor/{id}": {
       "delete": {
         "operationId": "LoginlogController_remove",
         "summary": "登录日志-删除日志",
@@ -4474,7 +4474,7 @@
         ]
       }
     },
-    "/monitor/logininfor/export": {
+    "/admin/monitor/logininfor/export": {
       "post": {
         "operationId": "LoginlogController_export",
         "summary": "导出登录日志为xlsx文件",
@@ -4504,7 +4504,7 @@
         ]
       }
     },
-    "/monitor/online/list": {
+    "/admin/monitor/online/list": {
       "get": {
         "operationId": "OnlineController_findAll",
         "summary": "在线用户-列表",
@@ -4534,7 +4534,7 @@
         ]
       }
     },
-    "/monitor/online/{token}": {
+    "/admin/monitor/online/{token}": {
       "delete": {
         "operationId": "OnlineController_delete",
         "summary": "在线用户-强退",
@@ -4563,7 +4563,7 @@
         ]
       }
     },
-    "/monitor/operlog/clean": {
+    "/admin/monitor/operlog/clean": {
       "delete": {
         "operationId": "OperlogController_removeAll",
         "summary": "操作日志-清除全部日志",
@@ -4583,7 +4583,7 @@
         ]
       }
     },
-    "/monitor/operlog/list": {
+    "/admin/monitor/operlog/list": {
       "get": {
         "operationId": "OperlogController_findAll",
         "summary": "操作日志-列表",
@@ -4829,7 +4829,7 @@
         ]
       }
     },
-    "/monitor/operlog/{operId}": {
+    "/admin/monitor/operlog/{operId}": {
       "get": {
         "operationId": "OperlogController_findOne",
         "summary": "操作日志记录-详情",
@@ -4903,7 +4903,7 @@
         ]
       }
     },
-    "/monitor/operlog/export": {
+    "/admin/monitor/operlog/export": {
       "post": {
         "operationId": "OperlogController_exportData",
         "summary": "导出操作日志数据为xlsx",

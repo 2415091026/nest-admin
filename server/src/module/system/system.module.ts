@@ -1,4 +1,5 @@
 import { Module, Global } from '@nestjs/common';
+import { RouterModule } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { DeptModule } from './dept/dept.module';
 import { SysConfigModule } from './config/config.module';
@@ -23,6 +24,23 @@ import { UserModule } from './user/user.module';
     RoleModule,
     ToolModule,
     UserModule,
+    RouterModule.register([
+      {
+        path: 'admin',
+        children: [
+          SysConfigModule,
+          DeptModule,
+          DictModule,
+          MenuModule,
+          NoticeModule,
+          PostModule,
+          RoleModule,
+          ToolModule,
+          UserModule,
+        ],
+      },
+    ]),
   ],
 })
 export class SystemModule {}
+
