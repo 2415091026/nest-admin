@@ -8,7 +8,7 @@ app:
   # 文件相关
   file:
     # 是否为本地文件服务或cos
-    isLocal: true
+    isLocal: false
     # location 文件上传后存储目录，相对路径（相对本项目根目录）或绝对路径
     location: '../upload'
     # 文件服务器地址，这是开发环境的配置 生产环境请自行配置成可访问域名
@@ -19,9 +19,9 @@ app:
     maxSize: 10
 # 腾讯云cos配置
 cos:
-  secretId: 'AKIDpkgfUG6zqigWBnESSGrGUmuqZ8WgcKrE'
-  secretKey: 'CBxXt39HD0mV2MUQBj4ECxb5NSJwLWTB'
-  bucket: 'music-1329039788'
+  secretId: 'YOUR_SECRET_ID'
+  secretKey: 'YOUR_SECRET_KEY'
+  bucket: 'YOUR_BUCKET'
   region: 'ap-chengdu'
   domain: 'https://music-1329039788.cos.ap-chengdu.myqcloud.com'
   location: ''

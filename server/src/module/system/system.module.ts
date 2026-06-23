@@ -11,6 +11,8 @@ import { RoleModule } from './role/role.module';
 import { ToolModule } from './tool/tool.module';
 import { UserModule } from './user/user.module';
 import { MessageModule } from './message/message.module';
+import { UserExpModule } from './user-exp/user-exp.module';
+import { SignModule } from './sign/sign.module';
 
 @Global()
 @Module({
@@ -26,6 +28,8 @@ import { MessageModule } from './message/message.module';
     ToolModule,
     UserModule,
     MessageModule,
+    UserExpModule,
+    SignModule,
     RouterModule.register([
       {
         path: 'admin',
@@ -40,6 +44,8 @@ import { MessageModule } from './message/message.module';
           ToolModule,
           UserModule,
           MessageModule,
+          UserExpModule,
+          SignModule,
         ],
       },
     ]),

@@ -83,6 +83,19 @@ export const constantRoutes = [
         meta: { title: '个人中心', icon: 'user' }
       }
     ]
+  },
+  {
+    path: '/system/message-send',
+    component: Layout,
+    hidden: false,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/system/message/index'),
+        name: 'SystemMessageSend',
+        meta: { title: '发送系统消息', icon: 'message' }
+      }
+    ]
   }
 ]
 

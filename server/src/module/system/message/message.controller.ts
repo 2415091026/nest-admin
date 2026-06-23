@@ -1,8 +1,9 @@
-import { Controller, Get, Body, Put, Query } from '@nestjs/common';
+import { Controller, Get, Body, Put, Query, Post } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { MessageService } from './message.service';
-import { ListMessageDto, ReadMessageDto } from './dto/message.dto';
+import { ListMessageDto, ReadMessageDto, CreateMessageDto } from './dto/message.dto';
 import { User, UserDto } from 'src/module/system/user/user.decorator';
+import { RequirePermission } from 'src/common/decorators/require-premission.decorator';
 
 @ApiTags('消息中心')
 @Controller('system/message')
@@ -33,5 +34,17 @@ export class MessageController {
   @Get('unread/count')
   public getUnreadCount(@User() user: UserDto) {
     return this.messageService.getUnreadCount(user.user.userId);
+  }
+
+  @ApiOperation({
+    summary: '发布全员系统消息',
+  })
+  @ApiBody({ type: CreateMessageDto })
+  @Post('create')
+  @RequirePermission('system:message:add')
+  public createMessage(@Body() dto: CreateMessageDto, @User() user: UserDto) {
+    dto.receiverType = '0'; // 强制群发广播
+    dto.senderId = user.user.userId;
+    return this.messageService.createMessage(dto);
   }
 }

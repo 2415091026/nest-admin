@@ -122,6 +122,11 @@ export class ListPostDto extends PagingDto {
   @IsOptional()
   @IsString()
   public userId?: string;
+
+  @ApiProperty({ description: '审核与申诉状态 (0正常 1已下架 2申诉中 3申诉驳回)', required: false })
+  @IsOptional()
+  @IsString()
+  public auditStatus?: string;
 }
 
 
@@ -187,6 +192,34 @@ export class HandlePostReportDto {
   @ApiProperty({ description: '处理状态（0未处理 1已处理）', required: true })
   @IsString()
   @IsNotEmpty({ message: '状态不能为空' })
+  @Length(1, 1)
+  public status: string;
+}
+
+// ==================== 论坛帖子申诉及复核 DTO ====================
+
+export class AppealPostDto {
+  @ApiProperty({ description: '被申诉帖子ID', required: true })
+  @IsNumber()
+  @IsNotEmpty({ message: '帖子ID不能为空' })
+  public postId: number;
+
+  @ApiProperty({ description: '申诉原因说明', required: true })
+  @IsString()
+  @IsNotEmpty({ message: '申诉原因不能为空' })
+  @Length(1, 500)
+  public appealReason: string;
+}
+
+export class HandleAppealDto {
+  @ApiProperty({ description: '被申诉帖子ID', required: true })
+  @IsNumber()
+  @IsNotEmpty({ message: '帖子ID不能为空' })
+  public postId: number;
+
+  @ApiProperty({ description: '审批状态（0申诉通过/恢复上架 3申诉驳回）', required: true })
+  @IsString()
+  @IsNotEmpty({ message: '审批状态不能为空' })
   @Length(1, 1)
   public status: string;
 }

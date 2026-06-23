@@ -43,4 +43,10 @@ export class UserEntity extends BaseEntity {
 
   @Column({ type: 'timestamp', name: 'login_date', default: null, comment: '最后登录时间' })
   public loginDate: Date;
+
+  @Column({ type: 'int', name: 'user_level', default: 1, comment: '用户当前等级' })
+  public userLevel: number;
+
+  @Column({ type: 'int', name: 'exp_value', default: 0, comment: '用户当前累计经验值' })
+  public expValue: number;
 }

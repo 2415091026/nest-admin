@@ -10,6 +10,10 @@ import { CacheEnum } from 'src/common/enum/index';
 import { ConfigService } from 'src/module/system/config/config.service';
 import { ClientInfo, ClientInfoDto } from 'src/common/decorators/common.decorator';
 import { NotRequireAuth, User, UserDto } from 'src/module/system/user/user.decorator';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { UserEntity } from 'src/module/system/user/entities/sys-user.entity';
+import { LOGIN_TOKEN_EXPIRESIN } from 'src/common/constant/index';
 
 @ApiTags('根目录')
 @Controller('/')
@@ -19,6 +23,8 @@ export class MainController {
     private readonly mainService: MainService,
     private readonly redisService: RedisService,
     private readonly configService: ConfigService,
+    @InjectRepository(UserEntity)
+    private readonly userRepo: Repository<UserEntity>,
   ) { }
   @ApiOperation({
     summary: '用户登录',
@@ -105,6 +111,30 @@ export class MainController {
   })
   @Get('/getInfo')
   async getInfo(@User() user: UserDto) {
+    if (user && user.userId) {
+      // 实时从数据库拉取该用户的最新状态
+      const latestUser = await this.userRepo.findOne({
+        where: { userId: user.userId, delFlag: '0' }
+      });
+      if (latestUser) {
+        // 合并保留扩展属性，防止覆盖丢失
+        const updatedUser = {
+          ...user.user,
+          ...latestUser
+        };
+        // 同步更新 Redis 中的会话缓存，以防后续接口读取过期副本
+        await this.redisService.set(
+          `${CacheEnum.LOGIN_TOKEN_KEY}${user.token}`,
+          {
+            ...user,
+            user: updatedUser
+          },
+          LOGIN_TOKEN_EXPIRESIN
+        );
+        user.user = updatedUser;
+      }
+    }
+
     return {
       msg: '操作成功',
       code: 200,

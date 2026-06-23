@@ -21,6 +21,8 @@ import {
   CreatePostReportDto,
   ListPostReportDto,
   HandlePostReportDto,
+  AppealPostDto,
+  HandleAppealDto,
 } from './dto/forum.dto';
 import dayjs from 'dayjs';
 
@@ -143,7 +145,15 @@ export class ForumService {
       createBy: username,
       updateBy: username,
     });
-    await this.postRepo.save(post);
+    const saved = await this.postRepo.save(post);
+
+    // 异步派发发帖事件，用于经验值发放
+    this.eventEmitter.emit('forum.post.created', {
+      postId: saved.postId,
+      userId,
+      postTitle: saved.title,
+    });
+
     return ResultData.ok();
   }
 
@@ -170,7 +180,21 @@ export class ForumService {
     if (query.userId) {
       qb.andWhere('post.userId = :userId', { userId: Number(query.userId) });
     }
-    if (query.excludeReported === '1') {
+
+    // ==== 申诉与审核状态过滤逻辑 ====
+    if (query.auditStatus) {
+      // 显式传参过滤（通常是管理员在后台筛选特定状态如 2: 申诉中 的贴）
+      qb.andWhere('post.auditStatus = :auditStatus', { auditStatus: query.auditStatus });
+    } else {
+      // 未显式传参过滤时：
+      // 1. 如果没有指定 userId（公开列表），则默认只展示 0: 正常上架 的帖子
+      // 2. 如果指定了 userId（个人中心我的帖子），则不做过滤，让作者自己能看到所有状态的贴（以便对下架贴申诉）
+      if (!query.userId) {
+        qb.andWhere('post.auditStatus = :defaultAuditStatus', { defaultAuditStatus: '0' });
+      }
+    }
+
+    if (query.excludeReported === '1' && !query.userId) {
       qb.andWhere((subQuery) => {
         const sub = subQuery
           .subQuery()
@@ -261,7 +285,43 @@ export class ForumService {
       createBy: username,
       updateBy: username,
     });
-    await this.commentRepo.save(comment);
+    const saved = await this.commentRepo.save(comment);
+
+    // 异步派发相关事件
+    const post = await this.postRepo.findOne({ where: { postId: saved.postId } });
+    if (post) {
+      if (saved.parentId) {
+        // 如果是回复别人的评论，需要获取父评论作者
+        const parentComment = await this.commentRepo.findOne({
+          where: { commentId: saved.parentId },
+          relations: ['user'],
+        });
+        if (parentComment) {
+          this.eventEmitter.emit('forum.comment.replied', {
+            postId: saved.postId,
+            commentId: saved.commentId,
+            userId,
+            userName: username,
+            authorId: parentComment.userId,
+            postTitle: post.title,
+            content: saved.content,
+            parentContent: parentComment.content,
+          });
+        }
+      } else {
+        // 如果是评论帖子，需要发消息给帖子作者
+        this.eventEmitter.emit('forum.post.commented', {
+          postId: saved.postId,
+          commentId: saved.commentId,
+          userId,
+          userName: username,
+          authorId: post.userId,
+          postTitle: post.title,
+          content: saved.content,
+        });
+      }
+    }
+
     return ResultData.ok();
   }
 
@@ -383,7 +443,7 @@ export class ForumService {
   /**
    * 帖子收藏/取消收藏 Toggle
    */
-  async togglePostCollect(postId: number, userId: number) {
+  async togglePostCollect(postId: number, userId: number, userName: string) {
     const exist = await this.postCollectRepo.findOne({ where: { postId, userId } });
     if (exist) {
       await this.postCollectRepo.delete({ id: exist.id });
@@ -393,6 +453,19 @@ export class ForumService {
       const newCollect = this.postCollectRepo.create({ postId, userId });
       await this.postCollectRepo.save(newCollect);
       await this.postRepo.increment({ postId }, 'collectCount', 1);
+
+      // 异步派发帖子被收藏事件
+      const post = await this.postRepo.findOne({ where: { postId } });
+      if (post) {
+        this.eventEmitter.emit('forum.post.collected', {
+          postId,
+          userId,
+          userName,
+          authorId: post.userId,
+          postTitle: post.title,
+        });
+      }
+
       return ResultData.ok({ isCollected: true });
     }
   }
@@ -400,7 +473,7 @@ export class ForumService {
   /**
    * 评论点赞/取消评论点赞 Toggle
    */
-  async toggleCommentLike(commentId: number, userId: number) {
+  async toggleCommentLike(commentId: number, userId: number, userName: string) {
     const exist = await this.commentLikeRepo.findOne({ where: { commentId, userId } });
     if (exist) {
       await this.commentLikeRepo.delete({ id: exist.id });
@@ -410,6 +483,24 @@ export class ForumService {
       const newLike = this.commentLikeRepo.create({ commentId, userId });
       await this.commentLikeRepo.save(newLike);
       await this.commentRepo.increment({ commentId }, 'likeCount', 1);
+
+      // 异步派发评论被点赞事件
+      const comment = await this.commentRepo.findOne({
+        where: { commentId },
+        relations: ['post'],
+      });
+      if (comment) {
+        this.eventEmitter.emit('forum.comment.liked', {
+          commentId,
+          postId: comment.postId,
+          userId,
+          userName,
+          authorId: comment.userId,
+          commentContent: comment.content,
+          postTitle: comment.post?.title || '',
+        });
+      }
+
       return ResultData.ok({ isLiked: true });
     }
   }
@@ -488,6 +579,19 @@ export class ForumService {
     // 异步派发帖子举报完成事件以触发消息下发与实时推送
     const post = await this.postRepo.findOne({ where: { postId: report.postId } });
     if (post) {
+      // 联动：如果管理员选择“下架”（status === '1'），同步更新帖子表中审核状态为“1：已下架”，并清理之前的申诉数据
+      if (dto.status === '1') {
+        await this.postRepo.update(
+          { postId: report.postId },
+          {
+            auditStatus: '1',
+            appealReason: '',
+            appealTime: null,
+            updateBy: username,
+          },
+        );
+      }
+
       this.eventEmitter.emit('forum.report.processed', {
         postId: report.postId,
         reporterId: report.userId,
@@ -528,6 +632,76 @@ export class ForumService {
       }
     });
     return ResultData.ok({ list: posts, total: posts.length });
+  }
+
+  /**
+   * 发帖人发起帖子申诉
+   */
+  async appealPost(dto: AppealPostDto, userId: number, username: string) {
+    const post = await this.postRepo.findOne({ where: { postId: dto.postId, delFlag: '0' } });
+    if (!post) {
+      return ResultData.fail(404, '申诉失败：该帖子不存在或已被永久删除');
+    }
+    // 校验身份（防越权）
+    if (post.userId !== userId) {
+      return ResultData.fail(403, '申诉失败：您无权对此帖子发起申诉');
+    }
+    // 校验当前审核状态：仅在违规下架(1)或曾被驳回(3)时允许申诉
+    if (post.auditStatus !== '1' && post.auditStatus !== '3') {
+      return ResultData.fail(400, '申诉失败：当前帖子无需发起申诉');
+    }
+
+    await this.postRepo.update(
+      { postId: dto.postId },
+      {
+        auditStatus: '2', // 变更状态为 2: 申诉中
+        appealReason: dto.appealReason,
+        appealTime: new Date(),
+        updateBy: username,
+      },
+    );
+
+    return ResultData.ok();
+  }
+
+  /**
+   * 管理员审核复核帖子申诉
+   */
+  async handleAppeal(dto: HandleAppealDto, username: string) {
+    const post = await this.postRepo.findOne({ where: { postId: dto.postId, delFlag: '0' } });
+    if (!post) {
+      return ResultData.fail(404, '该帖子不存在或已被软删除');
+    }
+    if (post.auditStatus !== '2') {
+      return ResultData.fail(400, '该帖子不处于申诉复核状态');
+    }
+    if (dto.status !== '0' && dto.status !== '3') {
+      return ResultData.fail(400, '无效的审批状态，只能设置为恢复上架(0)或驳回申诉(3)');
+    }
+
+    const updatePayload: any = {
+      auditStatus: dto.status,
+      updateBy: username,
+    };
+
+    // 如果审批通过恢复上架，则清空申诉历史数据，恢复正常
+    if (dto.status === '0') {
+      updatePayload.appealReason = '';
+      updatePayload.appealTime = null;
+    }
+
+    await this.postRepo.update({ postId: dto.postId }, updatePayload);
+
+    // 派发申诉复核完毕事件，用于通知提醒推送
+    this.eventEmitter.emit('forum.appeal.processed', {
+      postId: post.postId,
+      authorId: post.userId,
+      postTitle: post.title,
+      result: dto.status === '0' ? '通过' : '驳回',
+      appealReason: post.appealReason,
+    });
+
+    return ResultData.ok();
   }
 }
 

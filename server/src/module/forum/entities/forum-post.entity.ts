@@ -47,6 +47,18 @@ export class ForumPostEntity extends BaseEntity {
   @Column({ type: 'char', name: 'is_essence', default: '0', length: 1, comment: '是否精华 (0否 1是)' })
   public isEssence: string;
 
+  @ApiProperty({ type: String, description: '审核与申诉状态 (0正常 1已下架 2申诉中 3申诉驳回)' })
+  @Column({ type: 'char', name: 'audit_status', default: '0', length: 1, comment: '审核与申诉状态 (0正常 1已下架 2申诉中 3申诉驳回)' })
+  public auditStatus: string;
+
+  @ApiProperty({ type: String, description: '申诉原因' })
+  @Column({ type: 'varchar', name: 'appeal_reason', length: 500, default: '', comment: '申诉原因' })
+  public appealReason: string;
+
+  @ApiProperty({ type: Date, description: '申诉时间' })
+  @Column({ type: 'datetime', name: 'appeal_time', default: null, comment: '申诉时间' })
+  public appealTime: Date;
+
   // 通过 @ManyToOne 关联系统用户实体
   @ManyToOne(() => UserEntity)
   @JoinColumn({ name: 'user_id' })

@@ -12,6 +12,8 @@ import {
   CreatePostReportDto,
   ListPostReportDto,
   HandlePostReportDto,
+  AppealPostDto,
+  HandleAppealDto,
 } from './dto/forum.dto';
 import { RequirePermission } from 'src/common/decorators/require-premission.decorator';
 import { User, UserDto } from 'src/module/system/user/user.decorator';
@@ -105,6 +107,24 @@ export class ForumController {
     return this.forumService.removePosts(postIds);
   }
 
+  @ApiOperation({ summary: '发帖人提起申诉' })
+  @ApiBody({ type: AppealPostDto })
+  @RequirePermission('forum:post:appeal')
+  @Post('/post/appeal')
+  @HttpCode(200)
+  appealPost(@Body() dto: AppealPostDto, @User() user: UserDto) {
+    return this.forumService.appealPost(dto, user.user.userId, user.user.userName);
+  }
+
+  @ApiOperation({ summary: '管理员审核/复核帖子申诉' })
+  @ApiBody({ type: HandleAppealDto })
+  @RequirePermission('forum:post:appeal:handle')
+  @Put('/post/appeal/handle')
+  @HttpCode(200)
+  handleAppeal(@Body() dto: HandleAppealDto, @User() user: UserDto) {
+    return this.forumService.handleAppeal(dto, user.user.userName);
+  }
+
   // ==================== 回帖评论管理 (Comment) ====================
 
   @ApiOperation({ summary: '回帖管理-发布评论' })
@@ -144,7 +164,7 @@ export class ForumController {
   @Post('/post/collect/:id')
   @HttpCode(200)
   togglePostCollect(@Param('id') id: string, @User() user: UserDto) {
-    return this.forumService.togglePostCollect(+id, user.user.userId);
+    return this.forumService.togglePostCollect(+id, user.user.userId, user.user.nickName || user.user.userName);
   }
 
   @ApiOperation({ summary: '评论点赞 (Toggle)' })
@@ -152,7 +172,7 @@ export class ForumController {
   @Post('/comment/like/:id')
   @HttpCode(200)
   toggleCommentLike(@Param('id') id: string, @User() user: UserDto) {
-    return this.forumService.toggleCommentLike(+id, user.user.userId);
+    return this.forumService.toggleCommentLike(+id, user.user.userId, user.user.nickName || user.user.userName);
   }
 
   // ==================== 帖子举报接口 (Report) ====================

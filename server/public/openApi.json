@@ -3955,6 +3955,76 @@
         ]
       }
     },
+    "/admin/system/message/create": {
+      "post": {
+        "operationId": "MessageController_createMessage",
+        "summary": "发布全员系统消息",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMessageDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "消息中心"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/system/sign/check-in": {
+      "post": {
+        "operationId": "SignController_doSign",
+        "summary": "用户执行每日签到",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "用户签到管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/system/sign/status": {
+      "get": {
+        "operationId": "SignController_getSignStatus",
+        "summary": "获取当前用户签到累积状态与历史",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "用户签到管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
     "/admin/monitor/job/list": {
       "get": {
         "operationId": "JobController_list",
@@ -5472,6 +5542,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "auditStatus",
+            "required": false,
+            "in": "query",
+            "description": "审核与申诉状态 (0正常 1已下架 2申诉中 3申诉驳回)",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -5532,6 +5611,66 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/post/appeal": {
+      "post": {
+        "operationId": "ForumController_appealPost",
+        "summary": "发帖人提起申诉",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppealPostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/admin/forum/post/appeal/handle": {
+      "put": {
+        "operationId": "ForumController_handleAppeal",
+        "summary": "管理员审核/复核帖子申诉",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HandleAppealDto"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": ""
@@ -7274,6 +7413,47 @@
           "messageIds"
         ]
       },
+      "CreateMessageDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "消息标题"
+          },
+          "content": {
+            "type": "string",
+            "description": "消息正文内容"
+          },
+          "messageType": {
+            "type": "string",
+            "description": "消息大类（1系统公告 2社交互动 3业务提醒）"
+          },
+          "bizType": {
+            "type": "string",
+            "description": "细分业务类型"
+          },
+          "bizId": {
+            "type": "number",
+            "description": "关联的具体业务ID"
+          },
+          "senderId": {
+            "type": "number",
+            "description": "发送人ID（0代表系统发送）"
+          },
+          "receiverType": {
+            "type": "string",
+            "description": "接收者范围（0全体群发 1单发个人）"
+          },
+          "receiverId": {
+            "type": "number",
+            "description": "接收人ID"
+          }
+        },
+        "required": [
+          "title",
+          "content"
+        ]
+      },
       "CreateJobDto": {
         "type": "object",
         "properties": {
@@ -7712,6 +7892,40 @@
         "required": [
           "name",
           "categoryId"
+        ]
+      },
+      "AppealPostDto": {
+        "type": "object",
+        "properties": {
+          "postId": {
+            "type": "number",
+            "description": "被申诉帖子ID"
+          },
+          "appealReason": {
+            "type": "string",
+            "description": "申诉原因说明"
+          }
+        },
+        "required": [
+          "postId",
+          "appealReason"
+        ]
+      },
+      "HandleAppealDto": {
+        "type": "object",
+        "properties": {
+          "postId": {
+            "type": "number",
+            "description": "被申诉帖子ID"
+          },
+          "status": {
+            "type": "string",
+            "description": "审批状态（0申诉通过/恢复上架 3申诉驳回）"
+          }
+        },
+        "required": [
+          "postId",
+          "status"
         ]
       },
       "CreateCommentDto": {
