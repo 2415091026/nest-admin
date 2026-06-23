@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询帖子列表
 export function listPost(query) {
   return request({
-    url: '/forum/post/list',
+    url: '/forum/post/manage/list',
     method: 'get',
     params: query
   })

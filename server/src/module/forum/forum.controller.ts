@@ -22,7 +22,7 @@ import { User, UserDto } from 'src/module/system/user/user.decorator';
 @ApiBearerAuth('Authorization')
 @Controller('forum')
 export class ForumController {
-  constructor(private readonly forumService: ForumService) {}
+  constructor(private readonly forumService: ForumService) { }
 
   // ==================== 看板数据统计 ====================
 
@@ -82,6 +82,13 @@ export class ForumController {
   @Get('/post/list')
   findAllPosts(@Query() query: ListPostDto) {
     return this.forumService.findAllPosts(query);
+  }
+
+  @ApiOperation({ summary: '帖子管理-列表(管理后台专用，不过滤审核状态)' })
+  @RequirePermission('forum:post:list')
+  @Get('/post/manage/list')
+  findAllPostsForManage(@Query() query: ListPostDto) {
+    return this.forumService.findAllPostsForManage(query);
   }
 
   @ApiOperation({ summary: '帖子管理-详情 (会自动累加阅读量)' })

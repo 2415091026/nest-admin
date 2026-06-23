@@ -53,6 +53,37 @@ export class MessageListener {
   }
 
   /**
+   * 监听帖子申诉复核处理完结的事件，生成申诉结果通知（发送给作者）
+   */
+  @OnEvent('forum.appeal.processed')
+  public async handleAppealProcessed(event: {
+    postId: number;
+    authorId: number;
+    postTitle: string;
+    result: string;
+    appealReason: string;
+  }): Promise<void> {
+    try {
+      this.logger.log(`[MessageListener] 收到申诉复核处理完成事件，开始消费: PostID: ${event.postId}`);
+
+      const appealMsg: CreateMessageDto = {
+        title: `申诉复核结果通知`,
+        content: `您对帖子《${event.postTitle}》发起的申诉已被管理员[${event.result}]。${
+          event.result === '通过' ? '帖子已恢复正常上架。' : '申诉已被驳回，维持下架处分。'
+        }`,
+        messageType: '3', // 业务提醒
+        bizType: 'post_appeal_processed',
+        bizId: event.postId,
+        receiverType: '1',
+        receiverId: event.authorId,
+      };
+      await this.messageService.createMessage(appealMsg);
+    } catch (err) {
+      this.logger.error(`[MessageListener] 消费帖子申诉处理事件发生异常: ${err.message}`);
+    }
+  }
+
+  /**
    * 监听社区帖子点赞事件，生成社交互动点赞通知并发送给作者
    */
   @OnEvent('forum.post.liked')

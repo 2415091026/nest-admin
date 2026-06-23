@@ -226,6 +226,67 @@ export class ForumService {
     return ResultData.ok({ list, total });
   }
 
+  async findAllPostsForManage(query: ListPostDto) {
+    const qb = this.postRepo.createQueryBuilder('post')
+      .leftJoinAndSelect('post.user', 'user')
+      .where('post.delFlag = :delFlag', { delFlag: '0' });
+
+    if (query.categoryId) {
+      qb.andWhere('post.categoryId = :categoryId', { categoryId: query.categoryId });
+    }
+    if (query.title) {
+      qb.andWhere('post.title LIKE :title', { title: `%${query.title}%` });
+    }
+    if (query.isTop) {
+      qb.andWhere('post.isTop = :isTop', { isTop: query.isTop });
+    }
+    if (query.isEssence) {
+      qb.andWhere('post.isEssence = :isEssence', { isEssence: query.isEssence });
+    }
+    if (query.status) {
+      qb.andWhere('post.status = :status', { status: query.status });
+    }
+    if (query.userId) {
+      qb.andWhere('post.userId = :userId', { userId: Number(query.userId) });
+    }
+
+    // ==== 申诉与审核状态过滤逻辑（管理后台无默认过滤，传什么查什么，不传查全部） ====
+    if (query.auditStatus) {
+      qb.andWhere('post.auditStatus = :auditStatus', { auditStatus: query.auditStatus });
+    }
+
+    if (query.excludeReported === '1' && !query.userId) {
+      qb.andWhere((subQuery) => {
+        const sub = subQuery
+          .subQuery()
+          .select('1')
+          .from(ForumPostReportEntity, 'report')
+          .where('report.postId = post.postId')
+          .andWhere('report.delFlag = :reportDelFlag', { reportDelFlag: '0' })
+          .getQuery();
+        return `NOT EXISTS ${sub}`;
+      });
+    }
+
+    // 默认置顶帖子展示在最前面，其次按创建时间降序
+    qb.orderBy('post.isTop', 'DESC')
+      .addOrderBy('post.createTime', 'DESC');
+
+    if (query.pageSize && query.pageNum) {
+      qb.skip(query.pageSize * (query.pageNum - 1)).take(query.pageSize);
+    }
+
+    const [list, total] = await qb.getManyAndCount();
+
+    list.forEach((post) => {
+      if (post.user) {
+        delete post.user.password;
+      }
+    });
+
+    return ResultData.ok({ list, total });
+  }
+
   /**
    * 查看帖子详情：递增浏览量，并带出发布人信息
    */

@@ -173,7 +173,7 @@ export class UpdateProfileDto {
 
   @ApiProperty({ required: true })
   @IsOptional()
-  @IsEmail()
+  // @IsEmail()
   @Length(0, 50)
   email: string;
 
@@ -185,7 +185,7 @@ export class UpdateProfileDto {
   @ApiProperty({ required: true })
   @IsOptional()
   @IsString()
-  @IsEnum(StatusEnum)
+  // @IsEnum(StatusEnum)
   sex: string;
 
   @ApiProperty({ required: false })

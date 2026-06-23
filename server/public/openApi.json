@@ -5568,6 +5568,137 @@
         ]
       }
     },
+    "/admin/forum/post/manage/list": {
+      "get": {
+        "operationId": "ForumController_findAllPostsForManage",
+        "summary": "帖子管理-列表(管理后台专用，不过滤审核状态)",
+        "parameters": [
+          {
+            "name": "pageNum",
+            "required": true,
+            "in": "query",
+            "description": "当前分页",
+            "schema": {
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "description": "每页数量",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "orderByColumn",
+            "required": false,
+            "in": "query",
+            "description": "排序字段",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isAsc",
+            "required": false,
+            "in": "query",
+            "description": "排序规则",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "required": false,
+            "in": "query",
+            "description": "分类板块ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "title",
+            "required": false,
+            "in": "query",
+            "description": "帖子标题（模糊查询）",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isTop",
+            "required": false,
+            "in": "query",
+            "description": "是否置顶（0否 1是）",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isEssence",
+            "required": false,
+            "in": "query",
+            "description": "是否精华（0否 1是）",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "状态（0正常 1停用）",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "excludeReported",
+            "required": false,
+            "in": "query",
+            "description": "是否排除已举报帖子（1是 0否）",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": false,
+            "in": "query",
+            "description": "发帖人用户ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "auditStatus",
+            "required": false,
+            "in": "query",
+            "description": "审核与申诉状态 (0正常 1已下架 2申诉中 3申诉驳回)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "论坛管理"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
     "/admin/forum/post/{id}": {
       "get": {
         "operationId": "ForumController_findOnePost",

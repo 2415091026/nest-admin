@@ -614,7 +614,27 @@ export class UserService {
     }
     user['userName'] = user.userName;
     user['nickName'] = user.userName;
-    await this.userRepo.save({ ...user, loginDate, userType: SYS_USER_TYPE.CUSTOM });
+    const res = await this.userRepo.save({ ...user, loginDate, userType: SYS_USER_TYPE.CUSTOM });
+
+    // 查询普通角色（roleKey: 'common'）
+    const roles = await this.roleService.findRoles({
+      where: {
+        roleKey: 'common',
+        delFlag: '0',
+      },
+    });
+    const defaultRoleId = roles.length > 0 ? roles[0].roleId : 2;
+
+    // 绑定默认角色为普通角色
+    const roleEntity = this.sysUserWithRoleEntityRep.createQueryBuilder('roleEntity');
+    await roleEntity
+      .insert()
+      .values({
+        userId: res.userId,
+        roleId: defaultRoleId,
+      })
+      .execute();
+
     return ResultData.ok();
   }
 
